@@ -1,0 +1,11 @@
+.git
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+*.db
+*.log
+.env
+packages/crop_agent/crop_agent/outputs
+full_execution.log
+new_pipeline.txt

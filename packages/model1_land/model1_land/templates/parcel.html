@@ -58,6 +58,43 @@
   </form>
 </div>
 
+<h3>🌱 Crop Advisor <small>· Model 2 pipeline</small></h3>
+<div class="card">
+  {% if advice %}
+    <div class="stat-row">
+      <div>Crop: <b>{{ advice.target_crop }}</b></div>
+      <div>Overall confidence: <b>{{ advice.overall_confidence_pct }}%</b></div>
+      <div>Generated: <b>{{ advice.created_at.strftime('%Y-%m-%d %H:%M') }}</b></div>
+    </div>
+    <p style="margin:.75rem 0 0; color: var(--soil-700); white-space: pre-wrap;">{{ advice.recommendation_text }}</p>
+  {% else %}
+    <em>No advice generated yet. Fill the form below to run the full agentic pipeline (~30–60s).</em>
+  {% endif %}
+
+  <details style="margin-top:1rem;">
+    <summary style="cursor:pointer; color:var(--leaf-700); font-weight:500;">
+      🤖 Run / re-run Crop Advisor
+    </summary>
+    <form method="post" action="/parcels/{{ p.id }}/advisor" style="background:transparent; border:none; padding:.75rem 0 0;">
+      <input name="target_crop" placeholder="Target crop (e.g. wheat)" required>
+      <select name="water_source" required style="padding:.5rem .65rem; margin:.2rem; border:1px solid var(--line); border-radius:8px; background:#fff; font:inherit;">
+        <option value="nile_canal">Nile canal</option>
+        <option value="groundwater">Groundwater</option>
+        <option value="rainfed">Rainfed</option>
+      </select>
+      <input name="soil_type" placeholder="Soil type (e.g. clay)" required>
+      <input name="budget_egp" type="number" step="100" min="100" placeholder="Budget EGP" required>
+      <input name="start_date" type="date" required>
+      <input name="harvest_horizon_days" type="number" min="60" max="365" value="180" placeholder="Horizon days">
+      <select name="language" style="padding:.5rem .65rem; margin:.2rem; border:1px solid var(--line); border-radius:8px; background:#fff; font:inherit;">
+        <option value="en">English</option>
+        <option value="ar">Arabic</option>
+      </select>
+      <button>🌱 Run advisor</button>
+    </form>
+  </details>
+</div>
+
 <h3>🌻 Ownership <small>({{ sold_shares }}/{{ shares_per_parcel }} shares sold · {{ remaining_shares }} open)</small></h3>
 <div class="bar"><span style="width: {{ sold_shares / shares_per_parcel * 100 }}%;"></span></div>
 
@@ -79,9 +116,18 @@
 
 <form method="post" action="/parcels/{{ p.id }}/invest">
   <strong>🌱 Buy shares</strong>
-  <input name="investor_id" type="number" min="1" placeholder="Investor ID" required>
-  <input name="share_count" type="number" min="1" max="{{ remaining_shares }}" placeholder="# shares (max {{ remaining_shares }})" required>
-  <button>Invest</button>
+  {% if current_investor %}
+    <p style="margin:.25rem 0 .5rem; color:var(--soil-700); font-size:.9rem;">
+      Buying as <b>{{ current_investor.name }}</b>. {{ remaining_shares }} share(s) available at
+      <b>{{ "{:,.0f}".format(price_per_share) }} EGP</b>/share.
+    </p>
+    <input name="share_count" type="number" min="1" max="{{ remaining_shares }}" placeholder="# shares" required>
+    <button>Invest</button>
+  {% else %}
+    <p style="margin:.25rem 0 .5rem; color:var(--clay);">
+      <a href="/login">Log in</a> to buy shares.
+    </p>
+  {% endif %}
 </form>
 
 <h3>🚜 Leases <small>· total revenue paid out: {{ "{:,.0f}".format(total_payouts) }} EGP</small></h3>

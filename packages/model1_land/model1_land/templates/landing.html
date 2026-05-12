@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--leaf-50), var(--soil-100));
+    border: 1px solid var(--line); border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .hero h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 2.4rem; line-height: 1.1; margin: 0 0 .75rem;
+    color: var(--leaf-900);
+  }
+  .hero p { font-size: 1.05rem; color: var(--soil-700); max-width: 640px; margin: 0 auto 1.25rem; }
+  .hero .ctas { display:flex; justify-content:center; gap:.75rem; flex-wrap: wrap; }
+  .hero a.btn {
+    display:inline-block; padding: .65rem 1.4rem; border-radius: 10px;
+    text-decoration: none; font-weight: 500; font-size: .95rem;
+  }
+  .hero a.primary { background: var(--leaf-700); color: #fff; }
+  .hero a.primary:hover { background: var(--leaf-900); }
+  .hero a.secondary { background: #fff; color: var(--leaf-900); border: 1px solid var(--leaf-200); }
+  .hero a.secondary:hover { background: var(--leaf-50); }
+
+  .stats {
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .stat {
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding: 1.15rem 1.25rem;
+  }
+  .stat .v {
+    font-family:'Fraunces', serif; font-size:1.8rem; font-weight:700;
+    color: var(--leaf-900); line-height:1.1;
+  }
+  .stat .k { color: var(--soil-700); font-size:.8rem; text-transform: uppercase; letter-spacing:.1em; margin-top:.25rem; }
+
+  .pillars {
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem; margin: 1.5rem 0;
+  }
+  .pillar {
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding: 1.25rem;
+  }
+  .pillar h4 { font-family:'Fraunces', serif; margin: 0 0 .5rem; color: var(--leaf-900); }
+  .pillar p { margin: 0; color: var(--soil-700); font-size:.92rem; }
+
+  .featured h3 { margin-top: 2rem; }
+</style>
+
+<div class="hero">
+  <h2>🌾 Cultivating bankable land.</h2>
+  <p>AI-fractional agriculture for Egypt. Verified parcels, transparent risk tiering, pro-rata lease revenue. Three engines, one platform.</p>
+  <div class="ctas">
+    <a class="btn primary" href="/parcels">Browse parcels →</a>
+    {% if not current_investor %}<a class="btn secondary" href="/login">I'm an investor</a>{% endif %}
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="v">{{ parcels_count }}</div><div class="k">🌱 Parcels listed</div></div>
+  <div class="stat"><div class="v">{{ "{:,.0f}".format(total_aum) }}</div><div class="k">💰 EGP under management</div></div>
+  <div class="stat"><div class="v">{{ investors_count }}</div><div class="k">👥 Investors onboard</div></div>
+  <div class="stat"><div class="v">{{ high_count }} / {{ low_count }}</div><div class="k">🔥 High / 🌳 Low risk</div></div>
+</div>
+
+<h3>The three engines</h3>
+<div class="pillars">
+  <div class="pillar">
+    <h4>🌾 Model 1 — Fractional Land</h4>
+    <p>AI scores every parcel for fair value and risk tier. Investors buy shares, farmers lease at company-set rents, revenue splits pro-rata.</p>
+  </div>
+  <div class="pillar">
+    <h4>🌱 Model 2 — Farm Operations</h4>
+    <p>Agentic crop-recommendation pipeline: 12 stages, soil + weather + market evidence, self-critique. Available per-parcel as the Crop Advisor.</p>
+  </div>
+  <div class="pillar">
+    <h4>♻️ Model 3 — Hybrid (planned)</h4>
+    <p>Dynamic capital rebalancing between land stability and operations velocity based on real-time signals. Coming next.</p>
+  </div>
+</div>
+
+{% if featured %}
+<h3 class="featured">Featured parcels</h3>
+<div class="card">
+<table>
+  <thead><tr><th>Parcel</th><th>Governorate</th><th>Share (EGP)</th><th>Risk</th><th></th></tr></thead>
+  <tbody>
+  {% for p in featured %}
+  <tr>
+    <td><a href="/parcels/{{ p.id }}">🌾 {{ p.name }}</a></td>
+    <td>{{ p.governorate }}</td>
+    <td>{{ "{:,.0f}".format(p.price_egp / 1000) }}</td>
+    <td><span class="tier tier-{{ p.risk_tier }}">{{ p.risk_tier }}</span></td>
+    <td><a href="/parcels/{{ p.id }}">view →</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

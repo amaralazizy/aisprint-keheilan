@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🔑 Log in</h2>
+<div class="card">
+  <p style="margin-top:0; color:var(--soil-700);">
+    Demo mode. Pick an existing investor profile to act as. No password.
+  </p>
+  <form method="post" action="/login" style="background:transparent; border:none; padding:0;">
+    <select name="investor_id" required style="padding:.5rem .65rem; margin:.2rem; border:1px solid var(--line); border-radius:8px; background:#fff; font:inherit;">
+      <option value="" disabled selected>— pick an investor —</option>
+      {% for i in investors %}
+      <option value="{{ i.id }}">{{ i.name }} · {{ "{:,.0f}".format(i.budget_egp) }} EGP · {{ i.risk_appetite }} risk</option>
+      {% endfor %}
+    </select>
+    <button>Log in</button>
+  </form>
+
+  <p style="margin-top:1.25rem; font-size:.9rem; color:var(--soil-700);">
+    No profile yet? <a href="/investors">Create one →</a>
+  </p>
+</div>
+{% endblock %}

@@ -15,6 +15,15 @@ venv/
 
 # Pipeline runtime artefacts
 crop_agent/outputs/
+packages/crop_agent/crop_agent/outputs/
+full_execution.log
+new_pipeline.txt
+
+# SQLite databases (never commit)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
 
 # OS / editor
 .DS_Store

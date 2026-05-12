@@ -11,7 +11,12 @@ dependencies = [
     "python-multipart>=0.0.9",
     "openai>=1.0",
     "python-dotenv>=1.0",
+    "crop_agent",
+    "itsdangerous>=2.0",
 ]
+
+[tool.uv.sources]
+crop_agent = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

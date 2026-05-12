@@ -1,7 +1,9 @@
+import os
 from sqlmodel import SQLModel, create_engine, Session
 
-DB_URL = "sqlite:///model1_land.db"
-engine = create_engine(DB_URL, echo=False, connect_args={"check_same_thread": False})
+DB_URL = os.getenv("DATABASE_URL", "sqlite:///model1_land.db")
+_connect_args = {"check_same_thread": False} if DB_URL.startswith("sqlite") else {}
+engine = create_engine(DB_URL, echo=False, connect_args=_connect_args)
 
 
 def init_db() -> None:

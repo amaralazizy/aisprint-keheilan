@@ -83,3 +83,14 @@ class Payout(SQLModel, table=True):
     lease: Optional[LeaseRecord] = Relationship(back_populates="payouts")
     parcel: Optional[Parcel] = Relationship(back_populates="payouts")
     investor: Optional[Investor] = Relationship(back_populates="payouts")
+
+
+class CropAdvice(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    parcel_id: int = Field(foreign_key="parcel.id")
+    target_crop: str
+    recommendation_text: str
+    narrative: str
+    raw_input_json: str
+    overall_confidence_pct: int = 0
+    created_at: datetime = Field(default_factory=datetime.utcnow)
