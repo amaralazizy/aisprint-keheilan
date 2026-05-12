@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>👥 Investors</h2>
+
+<div class="card">
+<table>
+  <thead><tr><th>ID</th><th>Name</th><th>Budget (EGP)</th><th>Horizon</th><th>Risk</th><th></th></tr></thead>
+  <tbody>
+  {% for i in investors %}
+  <tr>
+    <td>{{ i.id }}</td>
+    <td><a href="/investors/{{ i.id }}">{{ i.name }}</a></td>
+    <td>{{ "{:,.0f}".format(i.budget_egp) }}</td>
+    <td>{{ i.horizon_years }}y</td>
+    <td><span class="tier tier-{{ i.risk_appetite }}">{{ i.risk_appetite }}</span></td>
+    <td><a href="/investors/{{ i.id }}">view →</a></td>
+  </tr>
+  {% else %}<tr><td colspan="6"><em>No investors yet.</em></td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<form method="post" action="/investors">
+  <strong>🌱 Add investor</strong>
+  <input name="name" placeholder="Full name" required>
+  <input name="email" type="email" placeholder="email (optional)">
+  <input name="budget_egp" type="number" step="1000" min="0" placeholder="Budget EGP" required>
+  <input name="horizon_years" type="number" min="1" max="30" placeholder="Horizon (years)" required>
+  <select name="risk_appetite" required style="padding:.5rem .65rem; margin:.2rem; border:1px solid var(--line); border-radius:8px; background:#fff;">
+    <option value="Low">Low risk</option>
+    <option value="Medium" selected>Medium risk</option>
+    <option value="High">High risk</option>
+  </select>
+  <button>Create</button>
+</form>
+
+<p><a href="/">← back to parcels</a></p>
+{% endblock %}

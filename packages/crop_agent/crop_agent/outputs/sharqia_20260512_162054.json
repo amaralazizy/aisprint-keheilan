@@ -1,0 +1,648 @@
+{
+  "output": {
+    "top": {
+      "rank": 1,
+      "crop": "barley",
+      "confidence_pct": 47,
+      "score_breakdown": {
+        "soil_fit": 0.6,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7
+      },
+      "yield_range_t_per_feddan": [
+        2.0,
+        3.0
+      ],
+      "revenue_egp_per_feddan": [
+        11375.0,
+        13812.5,
+        15437.5
+      ],
+      "amendment_plan": [],
+      "pest_calendar": [],
+      "trade_offs": "no major trade-offs flagged"
+    },
+    "alternatives": [
+      {
+        "rank": 2,
+        "crop": "wheat",
+        "confidence_pct": 44,
+        "score_breakdown": {
+          "soil_fit": 0.45,
+          "timing": 1.0,
+          "market": 0.7,
+          "water": 1.0,
+          "risk": 0.7
+        },
+        "yield_range_t_per_feddan": [
+          2.5,
+          3.8
+        ],
+        "revenue_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "amendment_plan": [
+          {
+            "action": "apply elemental sulphur 200 kg/feddan",
+            "cost_egp": 2200.0,
+            "reason": "lower pH from 7.8 toward 7.5"
+          }
+        ],
+        "pest_calendar": [
+          {
+            "month": "Dec",
+            "pest": "aphids",
+            "action": "scout weekly; threshold 10/tiller"
+          },
+          {
+            "month": "Feb",
+            "pest": "yellow rust",
+            "action": "apply triazole if observed"
+          },
+          {
+            "month": "Mar",
+            "pest": "Hessian fly",
+            "action": "rotation; resistant cultivars"
+          }
+        ],
+        "trade_offs": "no major trade-offs flagged"
+      },
+      {
+        "rank": 3,
+        "crop": "onion",
+        "confidence_pct": 44,
+        "score_breakdown": {
+          "soil_fit": 0.45,
+          "timing": 1.0,
+          "market": 0.7,
+          "water": 1.0,
+          "risk": 0.7
+        },
+        "yield_range_t_per_feddan": [
+          10.0,
+          16.0
+        ],
+        "revenue_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          89375.0
+        ],
+        "amendment_plan": [
+          {
+            "action": "apply elemental sulphur 200 kg/feddan",
+            "cost_egp": 2200.0,
+            "reason": "lower pH from 7.8 toward 7.0"
+          }
+        ],
+        "pest_calendar": [],
+        "trade_offs": "no major trade-offs flagged"
+      }
+    ],
+    "assumptions": [
+      {
+        "text": "ph not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "nitrogen_ppm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "phosphorus_ppm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "potassium_ppm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "salinity_ds_m not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "soil_depth_cm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "cec not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "irrigation_type not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "last_crop not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "years_since_reclamation not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "ph value 7.8 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "cec value 28.0 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "salinity_ds_m value 1.5 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "clay_pct value 45.0 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "sand_pct value 20.0 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "Soil profile populated entirely from regional defaults",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "baseline market prices used for: barley, wheat, onion, sugar_beet, alfalfa, tomato, potato — no live price signal found",
+        "confidence": "low",
+        "source": "market_signal_missing"
+      },
+      {
+        "text": "Confidence reduced by 30 points by self-critique (raw 77% → adjusted 47%)",
+        "confidence": "high",
+        "source": "self_critique"
+      }
+    ],
+    "overall_confidence_pct": 47,
+    "language": "en",
+    "generated_at": "2026-05-12T13:20:47.592700Z"
+  },
+  "justification": {
+    "narrative": "Dear Farmer,\n\nGiven your situation, I recommend focusing on barley as your primary crop for the upcoming season. The overall confidence in this recommendation is 47%, which reflects some uncertainty due to limited soil data and market conditions.\n\n**Barley** is the top choice because it fits well with your clay soil, which has a pH of 7.8, although we have limited data to fully confirm this. The timing is perfect for planting barley in the \"shitawi\" season, and it requires 380 mm of water, which you can obtain from the Nile Canal. The market conditions are favorable, with a baseline price that suggests good revenue potential, estimated at around 11,375 EGP to 15,437.5 EGP per feddan depending on yield. Additionally, there are no significant risk factors associated with barley cultivation at this time.\n\n**Wheat** is the second option, but it has a lower soil fit score of 0.45, meaning it is less optimal for your soil conditions. While the timing is also suitable, wheat requires more water (450 mm) than barley, which could be a challenge. The revenue potential is higher than barley, ranging from 24,255 EGP to 32,917.5 EGP per feddan, but the increased water requirement and lower soil compatibility make it a riskier choice.\n\n**Onion** is ranked third, with similar soil fit and water requirements as wheat. While it offers the highest revenue potential, ranging from 50,050 EGP to 89,375 EGP per feddan, the risk of Tuta absoluta, a pest outbreak affecting onions, is a significant concern. This pest has been reported in the region, which could lead to crop losses and increased management costs.\n\nIn summary, barley is the most balanced choice for your farm, offering a good fit for your soil and water availability, along with manageable risks. While wheat and onion could potentially yield higher revenues, they come with greater risks and challenges that may not be suitable for your current situation.",
+    "parsed_input": {
+      "raw": {
+        "latitude": 30.71,
+        "longitude": 31.74,
+        "area_feddan": 5.0,
+        "water_source": "nile_canal",
+        "soil_type": "clay",
+        "budget_egp": 25000.0,
+        "start_date": "2026-11-15",
+        "harvest_horizon_days": 180,
+        "goal": "profit",
+        "language": "en",
+        "ph": null,
+        "nitrogen_ppm": null,
+        "phosphorus_ppm": null,
+        "potassium_ppm": null,
+        "salinity_ds_m": null,
+        "soil_depth_cm": null,
+        "cec": null,
+        "irrigation_type": null,
+        "last_crop": null,
+        "last_harvest_date": null,
+        "crop_history_success": [],
+        "crop_history_failure": [],
+        "past_diseases": [],
+        "years_since_reclamation": null
+      },
+      "governorate": "Sharqia",
+      "season": "shitawi",
+      "area_hectare": 2.1,
+      "soil_profile": {
+        "ph": {
+          "value": 7.8,
+          "source": "regional_default",
+          "confidence": "low"
+        },
+        "cec": {
+          "value": 28.0,
+          "source": "regional_default",
+          "confidence": "low"
+        },
+        "salinity_ds_m": {
+          "value": 1.5,
+          "source": "regional_default",
+          "confidence": "low"
+        },
+        "clay_pct": {
+          "value": 45.0,
+          "source": "regional_default",
+          "confidence": "low"
+        },
+        "sand_pct": {
+          "value": 20.0,
+          "source": "regional_default",
+          "confidence": "low"
+        }
+      },
+      "anomalies": [
+        {
+          "field": "soil_data",
+          "value": "missing",
+          "reason": "no measured or fetched soil data — using regional defaults",
+          "severity": "warn"
+        }
+      ]
+    },
+    "planned_queries": [
+      {
+        "text": "Ministerial decrees affecting crop choices in Sharqia for the 2026 season",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "Understanding any restrictions on crop choices is crucial for planning profitable cultivation."
+      },
+      {
+        "text": "Current Nile flow conditions and their impact on irrigation for Sharqia",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "Nile flow conditions directly affect irrigation availability, which is vital for crop success."
+      },
+      {
+        "text": "Latest FAO EMPRES alerts for pest and disease outbreaks in Sharqia",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "Awareness of potential pest and disease threats can help mitigate risks to crop yield."
+      },
+      {
+        "text": "Fertilizer import costs and EGP exchange rate impact on crop budgeting",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "Understanding fertilizer costs is essential for managing the farmer's budget effectively."
+      },
+      {
+        "text": "توصيات وزارة الزراعة للمزارعين في الشرقية لموسم الشتاء",
+        "language": "ar",
+        "category": "arabic_ministry",
+        "rationale": "Local ministry recommendations can provide tailored advice for successful crop management."
+      },
+      {
+        "text": "Soil amendment recommendations for clay soil in Sharqia",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "Given the clay soil type, specific amendments can enhance soil quality and crop yield."
+      },
+      {
+        "text": "What is the current EGP/USD exchange rate for revenue calculations?",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "The exchange rate will impact the profitability analysis of the recommended crops."
+      },
+      {
+        "text": "Are there any active disease alerts for crops being considered in Sharqia?",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "Disease alerts could significantly affect the viability of candidate crops."
+      }
+    ],
+    "evidence": [
+      {
+        "fact": "Tuta absoluta outbreak in Egypt Delta April 2026",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "e00077c8",
+        "language": "en"
+      }
+    ],
+    "conflicts": [],
+    "scores": [
+      {
+        "crop": "barley",
+        "soil_fit": 0.6,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.77,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 in optimal band; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 380 mm; source nile_canal",
+          "risk": "no penalising risk factors detected"
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "wheat",
+        "soil_fit": 0.44999999999999996,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.74,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 tolerable but not optimal; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 450 mm; source nile_canal",
+          "risk": "no penalising risk factors detected"
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "onion",
+        "soil_fit": 0.44999999999999996,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.74,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 tolerable but not optimal; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 450 mm; source nile_canal",
+          "risk": "no penalising risk factors detected"
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "sugar_beet",
+        "soil_fit": 0.44999999999999996,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.74,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 tolerable but not optimal; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 600 mm; source nile_canal",
+          "risk": "no penalising risk factors detected"
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "alfalfa",
+        "soil_fit": 0.44999999999999996,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.74,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 tolerable but not optimal; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 1200 mm; source nile_canal",
+          "risk": "no penalising risk factors detected"
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "tomato",
+        "soil_fit": 0.44999999999999996,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.39999999999999997,
+        "overall": 0.695,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 tolerable but not optimal; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 550 mm; source nile_canal",
+          "risk": "active pest alert: tuta absoluta"
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "potato",
+        "soil_fit": 0.18,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.6859999999999999,
+        "rationale": {
+          "soil_fit": "pH 7.8 from regional default (low confidence); pH 7.8 outside tolerable range; limited soil data — completeness 0.60",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 500 mm; source nile_canal",
+          "risk": "no penalising risk factors detected"
+        },
+        "vetoes": []
+      }
+    ],
+    "scenarios": [
+      {
+        "crop": "barley",
+        "drought_egp_per_feddan": [
+          11375.0,
+          13812.5,
+          15437.5
+        ],
+        "devaluation_egp_per_feddan": [
+          12187.5,
+          13812.5,
+          15437.5
+        ],
+        "pest_egp_per_feddan": [
+          11375.0,
+          13812.5,
+          15437.5
+        ],
+        "collapses_under": []
+      },
+      {
+        "crop": "wheat",
+        "drought_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "devaluation_egp_per_feddan": [
+          25987.5,
+          29452.5,
+          32917.5
+        ],
+        "pest_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "collapses_under": []
+      },
+      {
+        "crop": "onion",
+        "drought_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          67925.0
+        ],
+        "devaluation_egp_per_feddan": [
+          67925.0,
+          78650.0,
+          89375.0
+        ],
+        "pest_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          67925.0
+        ],
+        "collapses_under": []
+      }
+    ],
+    "assumptions": [
+      {
+        "text": "ph not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "nitrogen_ppm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "phosphorus_ppm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "potassium_ppm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "salinity_ds_m not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "soil_depth_cm not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "cec not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "irrigation_type not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "last_crop not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "years_since_reclamation not provided — assumed regional default or skipped",
+        "confidence": "low",
+        "source": "user_input_missing"
+      },
+      {
+        "text": "ph value 7.8 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "cec value 28.0 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "salinity_ds_m value 1.5 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "clay_pct value 45.0 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "sand_pct value 20.0 imputed from regional_default",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "Soil profile populated entirely from regional defaults",
+        "confidence": "low",
+        "source": "regional_default"
+      },
+      {
+        "text": "baseline market prices used for: barley, wheat, onion, sugar_beet, alfalfa, tomato, potato — no live price signal found",
+        "confidence": "low",
+        "source": "market_signal_missing"
+      },
+      {
+        "text": "Confidence reduced by 30 points by self-critique (raw 77% → adjusted 47%)",
+        "confidence": "high",
+        "source": "self_critique"
+      }
+    ],
+    "reflection_rounds": 1,
+    "reflection_log": [
+      {
+        "round": 1,
+        "uncertainties": [
+          "Current EGP/USD rate for revenue calculations",
+          "Active disease alerts for other candidate crops"
+        ],
+        "follow_up_count": 2,
+        "should_replan": false
+      }
+    ],
+    "critique_passed": false,
+    "trace": [
+      "[pipeline] starting at lat=30.71, lon=31.74",
+      "[pipeline] reasoner=openai/gpt-4o-mini, worker=meta-llama/llama-3.1-8b-instruct",
+      "[stage_2] starting parse + anomaly detect",
+      "[stage_2] SoilGrids returned empty — retrying once after backoff",
+      "[stage_2] no soil data — imputing regional defaults for Delta/clay",
+      "[stage_2] governorate=Sharqia, season=shitawi, anomalies=1",
+      "[stage_3] planning queries",
+      "[stage_3] planned 6 queries across 3 categories",
+      "[stage_4_5] starting parallel search + extraction",
+      "[stage_4_5] extracted 1 new evidence items",
+      "[stage_6] reflection round 1",
+      "[stage_4_5] starting parallel search + extraction",
+      "[stage_4_5] extracted 0 new evidence items",
+      "[stage_6] reflection finished after 1 rounds",
+      "[stage_7_8] scoring all crops across dimensions",
+      "[stage_7_8] scored 7 candidate crops",
+      "[stage_9] applying weighted scoring",
+      "[stage_9] weights for goal=profit: {'soil_fit': 0.2, 'timing': 0.15, 'market': 0.35, 'water': 0.15, 'risk': 0.15}",
+      "[stage_9] top 3: ['barley', 'wheat', 'onion']",
+      "[stage_10] running scenario simulations",
+      "[stage_10] simulated 3 crops; collapses: [('barley', []), ('wheat', []), ('onion', [])]",
+      "[stage_11] running self-critique",
+      "[stage_11] critique issue [block]: The #1 rank for barley is driven by low-confidence facts regarding soil fit.",
+      "[stage_11] critique issue [warn]: The EGP revenue figures for barley seem plausible, but the low confidence in soil data raises concerns.",
+      "[stage_11] critique issue [warn]: Multiple assumptions are marked as low confidence, which may affect the overall reliability of the recommendation.",
+      "[stage_12] building final output",
+      "[stage_12] finished — top=barley, conf=47%",
+      "[pipeline] finished"
+    ]
+  }
+}

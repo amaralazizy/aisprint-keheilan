@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keheilan — Fractional Land</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil-50:  #faf7f0;
+    --soil-100: #f1ead7;
+    --soil-200: #e3d5a8;
+    --soil-700: #6b4f1d;
+    --soil-900: #2c1f08;
+    --leaf-50:  #f0f7ee;
+    --leaf-200: #c4e0b8;
+    --leaf-500: #4a8a3a;
+    --leaf-700: #2f5f24;
+    --leaf-900: #143009;
+    --wheat:    #d9a441;
+    --clay:     #b94a3a;
+    --sky:      #6ba8c4;
+    --line:     #d8cda8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--soil-900);
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(74,138,58,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 100%, rgba(217,164,65,0.12), transparent 55%),
+      var(--soil-50);
+    min-height: 100vh;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 1rem 1.25rem 4rem; }
+
+  header.site {
+    display: flex; align-items: center; gap: .75rem;
+    padding: 1.25rem 0 1rem;
+    border-bottom: 2px dashed var(--line);
+    margin-bottom: 1.5rem;
+  }
+  header.site .mark {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--leaf-500), var(--wheat));
+    display: grid; place-items: center;
+    box-shadow: 0 4px 14px rgba(74,138,58,0.25);
+    font-size: 1.4rem;
+  }
+  header.site h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    margin: 0; font-size: 1.6rem; letter-spacing: -0.01em;
+    color: var(--leaf-900);
+  }
+  header.site h1 a { color: inherit; text-decoration: none; }
+  header.site .tag {
+    margin-left: auto;
+    font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--leaf-700); background: var(--leaf-50);
+    padding: .35rem .6rem; border-radius: 999px; border: 1px solid var(--leaf-200);
+  }
+
+  h2 { font-family: 'Fraunces', Georgia, serif; color: var(--leaf-900); margin: 1.25rem 0 .5rem; }
+  h3 { font-family: 'Fraunces', Georgia, serif; color: var(--soil-700); margin: 1.5rem 0 .5rem; font-weight: 500; }
+  a  { color: var(--leaf-700); }
+  a:hover { color: var(--leaf-900); }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 1px 0 rgba(107,79,29,0.04), 0 8px 24px rgba(44,31,8,0.04);
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--soil-700); font-weight: 600;
+    padding: .6rem .5rem; border-bottom: 2px solid var(--line);
+    background: var(--soil-100);
+  }
+  td { padding: .65rem .5rem; border-bottom: 1px solid var(--line); }
+  tbody tr:hover { background: var(--leaf-50); }
+  td a { font-weight: 500; text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+
+  .tier {
+    display: inline-block; padding: .15rem .55rem; border-radius: 999px;
+    font-size: .75rem; font-weight: 600; letter-spacing: .02em;
+    border: 1px solid transparent;
+  }
+  .tier-High   { color: #7a1d12; background: #fde6e1; border-color: #f3b9ad; }
+  .tier-Medium { color: #6b4406; background: #fdeccb; border-color: #f0c97a; }
+  .tier-Low    { color: #1f4413; background: #dff1d6; border-color: #a8d196; }
+
+  .filters {
+    display: flex; flex-wrap: wrap; gap: .4rem; align-items: center;
+    margin-bottom: 1rem;
+  }
+  .filters .label { font-size: .8rem; color: var(--soil-700); margin-right: .25rem; }
+  .filters a {
+    text-decoration: none;
+    padding: .3rem .75rem; border-radius: 999px;
+    background: #fff; border: 1px solid var(--line);
+    color: var(--soil-700); font-size: .85rem;
+  }
+  .filters a:hover { background: var(--leaf-50); border-color: var(--leaf-200); color: var(--leaf-900); }
+  .filters em { color: var(--leaf-700); font-style: normal; font-size: .8rem; }
+
+  form {
+    margin: 1rem 0;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, #fff, var(--soil-50));
+    border-radius: 12px;
+  }
+  form strong { display: block; margin-bottom: .5rem; color: var(--leaf-900); font-family: 'Fraunces', Georgia, serif; font-size: 1.05rem; }
+  input {
+    padding: .5rem .65rem; margin: .2rem .25rem .2rem 0;
+    border: 1px solid var(--line); border-radius: 8px;
+    font: inherit; background: #fff;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus {
+    outline: none; border-color: var(--leaf-500);
+    box-shadow: 0 0 0 3px rgba(74,138,58,0.15);
+  }
+  button {
+    padding: .5rem 1rem; margin: .2rem;
+    border: none; border-radius: 8px;
+    background: var(--leaf-700); color: #fff;
+    font: inherit; font-weight: 500; cursor: pointer;
+    transition: background .15s, transform .05s;
+  }
+  button:hover { background: var(--leaf-900); }
+  button:active { transform: translateY(1px); }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; font-size: .9rem; color: var(--soil-700); }
+  .stat-row b { color: var(--soil-900); }
+
+  .bar {
+    height: 10px; background: var(--soil-100); border-radius: 999px; overflow: hidden;
+    margin: .5rem 0 1rem; border: 1px solid var(--line);
+  }
+  .bar > span {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--leaf-500), var(--wheat));
+  }
+
+  footer.site {
+    margin-top: 3rem; padding-top: 1rem;
+    border-top: 1px dashed var(--line);
+    color: var(--soil-700); font-size: .8rem; text-align: center;
+  }
+
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: -2px; margin-right: .4rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .ai-overlay {
+    position: fixed; inset: 0;
+    background: rgba(44,31,8,0.45);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; backdrop-filter: blur(2px);
+  }
+  .ai-overlay.on { display: flex; }
+  .ai-overlay .panel {
+    background: #fff; border-radius: 14px; padding: 1.5rem 2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    text-align: center; max-width: 320px;
+    border: 1px solid var(--line);
+  }
+  .ai-overlay .big-spinner {
+    width: 48px; height: 48px;
+    border: 4px solid var(--soil-100);
+    border-top-color: var(--leaf-500);
+    border-right-color: var(--wheat);
+    border-radius: 50%; margin: 0 auto .75rem;
+    animation: spin 1s linear infinite;
+  }
+  .ai-overlay h4 {
+    margin: 0 0 .25rem;
+    font-family: 'Fraunces', Georgia, serif;
+    color: var(--leaf-900); font-size: 1.1rem;
+  }
+  .ai-overlay p { margin: 0; color: var(--soil-700); font-size: .85rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <div class="mark">🌾</div>
+    <h1><a href="/">Keheilan</a></h1>
+    <span class="tag">Fractional Land · Model 1</span>
+  </header>
+  {% block content %}{% endblock %}
+  <footer class="site">Keheilan AISPRINT · cultivating bankable land</footer>
+</div>
+
+<div class="ai-overlay" id="ai-overlay" role="status" aria-live="polite">
+  <div class="panel">
+    <div class="big-spinner"></div>
+    <h4 id="ai-overlay-title">🤖 AI is thinking…</h4>
+    <p id="ai-overlay-msg">Running inference. This can take 3–10 seconds.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  const AI_PATTERNS = [
+    { re: /\/ai\/valuate$/,  title: "🤖 Valuating parcel…", msg: "Comparing against governorate comps." },
+    { re: /\/ai\/risk$/,     title: "🤖 Scoring risk…",     msg: "Weighing road, trend, leases, and undervaluation." },
+    { re: /\/match$/,        title: "🤖 Matching parcels…", msg: "Ranking parcels against the investor profile." },
+  ];
+  const overlay = document.getElementById("ai-overlay");
+  const titleEl = document.getElementById("ai-overlay-title");
+  const msgEl   = document.getElementById("ai-overlay-msg");
+
+  document.addEventListener("submit", function (e) {
+    const form = e.target;
+    if (!(form instanceof HTMLFormElement)) return;
+    const action = form.getAttribute("action") || "";
+    const hit = AI_PATTERNS.find(p => p.re.test(action));
+    if (!hit) return;
+
+    titleEl.textContent = hit.title;
+    msgEl.textContent = hit.msg;
+    overlay.classList.add("on");
+
+    form.querySelectorAll("button").forEach(b => {
+      b.disabled = true;
+      const orig = b.innerHTML;
+      b.dataset.orig = orig;
+      b.innerHTML = '<span class="spinner"></span>Working…';
+    });
+  });
+})();
+</script>
+</body>
+</html>

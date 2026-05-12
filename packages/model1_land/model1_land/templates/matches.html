@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🤖 AI matches for {{ inv.name }}</h2>
+
+<div class="card">
+  <div class="stat-row">
+    <div>💰 Budget <b>{{ "{:,.0f}".format(inv.budget_egp) }}</b> EGP</div>
+    <div>⏳ Horizon <b>{{ inv.horizon_years }}</b>y</div>
+    <div>🎯 Risk <span class="tier tier-{{ inv.risk_appetite }}">{{ inv.risk_appetite }}</span></div>
+  </div>
+</div>
+
+<div class="card">
+<table>
+  <thead><tr><th>#</th><th>Parcel</th><th>Tier</th><th>Fit</th><th>Reasoning</th></tr></thead>
+  <tbody>
+  {% for m in matches %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td><a href="/parcels/{{ m.parcel.id }}">{{ m.parcel.name }}</a></td>
+    <td><span class="tier tier-{{ m.parcel.risk_tier }}">{{ m.parcel.risk_tier }}</span></td>
+    <td>
+      <div class="bar" style="width: 100px; margin:0;"><span style="width: {{ m.fit_score * 100 }}%;"></span></div>
+      {{ "%.2f"|format(m.fit_score) }}
+    </td>
+    <td style="font-size:.9rem; color:var(--soil-700);">{{ m.reasoning }}</td>
+  </tr>
+  {% else %}<tr><td colspan="5"><em>No matches returned.</em></td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<p><a href="/investors/{{ inv.id }}">← back to {{ inv.name }}</a></p>
+{% endblock %}

@@ -1,0 +1,471 @@
+{
+  "output": {
+    "top": {
+      "rank": 1,
+      "crop": "wheat",
+      "confidence_pct": 85,
+      "score_breakdown": {
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7
+      },
+      "yield_range_t_per_feddan": [
+        2.5,
+        3.8
+      ],
+      "revenue_egp_per_feddan": [
+        24255.0,
+        29452.5,
+        32917.5
+      ],
+      "amendment_plan": [],
+      "pest_calendar": [
+        {
+          "month": "Dec",
+          "pest": "aphids",
+          "action": "scout weekly; threshold 10/tiller"
+        },
+        {
+          "month": "Feb",
+          "pest": "yellow rust",
+          "action": "apply triazole if observed"
+        },
+        {
+          "month": "Mar",
+          "pest": "Hessian fly",
+          "action": "rotation; resistant cultivars"
+        }
+      ],
+      "trade_offs": "no major trade-offs flagged"
+    },
+    "alternatives": [
+      {
+        "rank": 2,
+        "crop": "tomato",
+        "confidence_pct": 85,
+        "score_breakdown": {
+          "soil_fit": 1.0,
+          "timing": 1.0,
+          "market": 0.7,
+          "water": 1.0,
+          "risk": 0.7
+        },
+        "yield_range_t_per_feddan": [
+          15.0,
+          25.0
+        ],
+        "revenue_egp_per_feddan": [
+          84000.0,
+          102000.0,
+          114000.0
+        ],
+        "amendment_plan": [],
+        "pest_calendar": [
+          {
+            "month": "Mar",
+            "pest": "tuta absoluta",
+            "action": "pheromone traps; deploy Bt"
+          },
+          {
+            "month": "May",
+            "pest": "whitefly",
+            "action": "reflective mulch; spinosad"
+          }
+        ],
+        "trade_offs": "no major trade-offs flagged"
+      },
+      {
+        "rank": 3,
+        "crop": "onion",
+        "confidence_pct": 85,
+        "score_breakdown": {
+          "soil_fit": 1.0,
+          "timing": 1.0,
+          "market": 0.7,
+          "water": 1.0,
+          "risk": 0.7
+        },
+        "yield_range_t_per_feddan": [
+          10.0,
+          16.0
+        ],
+        "revenue_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          89375.0
+        ],
+        "amendment_plan": [],
+        "pest_calendar": [],
+        "trade_offs": "no major trade-offs flagged"
+      }
+    ],
+    "assumptions": [],
+    "overall_confidence_pct": 55,
+    "language": "en",
+    "generated_at": "2026-05-12T12:33:53.751632Z"
+  },
+  "justification": {
+    "narrative": "### Crop Recommendations for Your Farm\n\nBased on your location, soil type, water availability, and budget, I recommend three crops: wheat, tomato, and onion. Here’s why each crop is suitable for your situation:\n\n#### 1. Wheat\nWheat is a strong choice for your farm because it fits perfectly with your clay soil and the timing of planting in mid-November. The Nile Canal provides ample water for irrigation, ensuring good growth. The expected yield is between 2.5 to 3.8 tons per feddan, which can generate revenue ranging from approximately 24,255 to 32,917 EGP per feddan. While the market score is lower at 0.7, wheat is generally a stable crop with less risk compared to others.\n\n#### 2. Tomato\nTomatoes also score well for your soil and water conditions, with a high yield potential of 15 to 25 tons per feddan. This could bring in revenue between 84,000 and 114,000 EGP per feddan, which is very attractive. However, there is a significant risk due to the recent outbreak of Tuta absoluta, a pest that affects tomatoes and is expected to peak in April 2026, which could severely impact your crop. Given this risk, it may not be the best choice despite its high revenue potential.\n\n#### 3. Onion\nOnions are another viable option, with a yield of 10 to 16 tons per feddan, translating to revenue between 50,050 and 89,375 EGP per feddan. Like wheat and tomatoes, onions are well-suited to your soil and water conditions. The risk level is similar to tomatoes, but without the immediate threat of a pest outbreak. This makes onions a more stable option compared to tomatoes.\n\n### Summary of Trade-offs\nWhile wheat is the safest option with low risk and stable returns, tomatoes offer the highest potential revenue but come with a significant risk due to the Tuta absoluta outbreak. Onions provide a middle ground with good yields and revenue potential but are still subject to some risk. If your primary goal is profit with minimal risk, I recommend focusing on wheat. If you are willing to take on more risk for potentially higher rewards, you might consider onions, keeping in mind the challenges with tomatoes.",
+    "parsed_input": {
+      "raw": {
+        "latitude": 30.71,
+        "longitude": 31.74,
+        "area_feddan": 5.0,
+        "water_source": "nile_canal",
+        "soil_type": "clay",
+        "budget_egp": 25000.0,
+        "start_date": "2026-11-15",
+        "harvest_horizon_days": 180,
+        "goal": "profit",
+        "language": "en",
+        "ph": null,
+        "nitrogen_ppm": null,
+        "phosphorus_ppm": null,
+        "potassium_ppm": null,
+        "salinity_ds_m": null,
+        "soil_depth_cm": null,
+        "cec": null,
+        "irrigation_type": null,
+        "last_crop": null,
+        "last_harvest_date": null,
+        "crop_history_success": [],
+        "crop_history_failure": [],
+        "past_diseases": [],
+        "years_since_reclamation": null
+      },
+      "governorate": "Sharqia",
+      "season": "shitawi",
+      "area_hectare": 2.1,
+      "soil_profile": {},
+      "anomalies": []
+    },
+    "planned_queries": [
+      {
+        "text": "Ministerial decrees affecting crop choices in Sharqia for the 2026 season",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "To ensure compliance with any restrictions on crop planting in Sharqia for the upcoming season."
+      },
+      {
+        "text": "Current Nile flow levels and their impact on irrigation for Sharqia",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "To assess the availability of water for irrigation from the Nile canal during the planting season."
+      },
+      {
+        "text": "Fertilizer import costs and their impact on crop profitability in Egypt",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "To evaluate how EGP devaluation affects the budget for fertilizers, which is crucial for maximizing profit."
+      },
+      {
+        "text": "FAO EMPRES alerts for pest outbreaks relevant to Sharqia crops",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "To be aware of any pest outbreaks that could threaten crop yields in Sharqia."
+      },
+      {
+        "text": "معلومات عن المحاصيل الموصى بها في الشرقية للموسم الشتوي",
+        "language": "ar",
+        "category": "arabic_ministry",
+        "rationale": "To obtain specific recommendations for winter crops suitable for the Sharqia governorate."
+      },
+      {
+        "text": "Crop rotation practices for clay soil in Sharqia",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "To identify effective crop rotation strategies that enhance soil health and profitability."
+      }
+    ],
+    "evidence": [
+      {
+        "fact": "Tuta absoluta outbreak reported in Egypt",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "afe6205c",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta outbreak location: Delta governorates",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "afe6205c",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta outbreak time: April 2026",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "afe6205c",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta outbreak reported in Egypt",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "8736e734",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta outbreak location: Delta governorates",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "8736e734",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta outbreak time: April 2026",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "8736e734",
+        "language": "en"
+      }
+    ],
+    "conflicts": [],
+    "scores": [
+      {
+        "crop": "wheat",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 450 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "tomato",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 550 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "onion",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 450 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "potato",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 500 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "sugar_beet",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 600 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "alfalfa",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 1200 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "barley",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 380 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      }
+    ],
+    "scenarios": [
+      {
+        "crop": "wheat",
+        "drought_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "devaluation_egp_per_feddan": [
+          25987.5,
+          29452.5,
+          32917.5
+        ],
+        "pest_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "collapses_under": []
+      },
+      {
+        "crop": "tomato",
+        "drought_egp_per_feddan": [
+          84000.0,
+          102000.0,
+          114000.0
+        ],
+        "devaluation_egp_per_feddan": [
+          90000.0,
+          102000.0,
+          114000.0
+        ],
+        "pest_egp_per_feddan": [
+          84000.0,
+          102000.0,
+          114000.0
+        ],
+        "collapses_under": []
+      },
+      {
+        "crop": "onion",
+        "drought_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          67925.0
+        ],
+        "devaluation_egp_per_feddan": [
+          67925.0,
+          78650.0,
+          89375.0
+        ],
+        "pest_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          67925.0
+        ],
+        "collapses_under": []
+      }
+    ],
+    "assumptions": [],
+    "reflection_rounds": 1,
+    "reflection_log": [
+      {
+        "round": 1,
+        "uncertainties": [
+          "Current EGP/USD rate for revenue calculations",
+          "Potential impact of Tuta absoluta on tomato yield specifically in Sharqia governorate"
+        ],
+        "follow_up_count": 2,
+        "should_replan": false
+      }
+    ],
+    "critique_passed": false,
+    "trace": [
+      "[pipeline] starting at lat=30.71, lon=31.74",
+      "[pipeline] reasoner=openai/gpt-4o-mini, worker=meta-llama/llama-3.1-8b-instruct",
+      "[stage_2] starting parse + anomaly detect",
+      "[stage_2] governorate=Sharqia, season=shitawi, anomalies=0",
+      "[stage_3] planning queries",
+      "[stage_3] planned 6 queries across 3 categories",
+      "[stage_4_5] starting parallel search + extraction",
+      "[stage_4_5] extracted 3 new evidence items",
+      "[stage_6] reflection round 1",
+      "[stage_6] dropped malformed follow-up: 1 validation error for PlannedQuery\ncategory\n  Input should be 'fixed_knowledge', 'live_signal' or 'arabic_ministry' [type=literal_error, input_value='economic', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+      "[stage_6] dropped malformed follow-up: 1 validation error for PlannedQuery\ncategory\n  Input should be 'fixed_knowledge', 'live_signal' or 'arabic_ministry' [type=literal_error, input_value='agronomy', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+      "[stage_4_5] starting parallel search + extraction",
+      "[stage_4_5] extracted 3 new evidence items",
+      "[stage_6] reflection finished after 1 rounds",
+      "[stage_7_8] scoring all crops across dimensions",
+      "[stage_7_8] scored 7 candidate crops",
+      "[stage_9] applying weighted scoring",
+      "[stage_9] weights for goal=profit: {'soil_fit': 0.2, 'timing': 0.15, 'market': 0.35, 'water': 0.15, 'risk': 0.15}",
+      "[stage_9] top 3: ['wheat', 'tomato', 'onion']",
+      "[stage_10] running scenario simulations",
+      "[stage_10] simulated 3 crops; collapses: [('wheat', []), ('tomato', []), ('onion', [])]",
+      "[stage_11] running self-critique",
+      "[stage_11] critique issue [block]: The #1 rank is driven by a LOW-confidence market factor (0.7).",
+      "[stage_11] critique issue [warn]: The EGP revenue figures for wheat seem plausible, but the figures for tomato and onion are significantly higher, which may raise questions about their feasibility.",
+      "[stage_11] critique issue [warn]: No assumptions are explicitly stated, which could lead to misunderstandings.",
+      "[stage_11] critique issue [warn]: No veto signals were identified, but it's important to ensure that no recent ministerial decrees or active outbreaks affect the crop choices.",
+      "[stage_12] building final output",
+      "[stage_12] finished — top=wheat, conf=55%",
+      "[pipeline] finished"
+    ]
+  }
+}

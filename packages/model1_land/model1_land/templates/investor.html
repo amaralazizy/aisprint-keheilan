@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>👤 {{ inv.name }}</h2>
+
+<div class="card">
+  <div class="stat-row">
+    <div>📧 <b>{{ inv.email or "—" }}</b></div>
+    <div>💰 Budget <b>{{ "{:,.0f}".format(inv.budget_egp) }}</b> EGP</div>
+    <div>⏳ Horizon <b>{{ inv.horizon_years }}</b> years</div>
+    <div>🎯 Risk <span class="tier tier-{{ inv.risk_appetite }}">{{ inv.risk_appetite }}</span></div>
+  </div>
+</div>
+
+<h3>🌾 Holdings</h3>
+<div class="card">
+<table>
+  <thead><tr><th>Parcel</th><th>Shares</th><th>Invested (EGP)</th></tr></thead>
+  <tbody>
+  {% for s in inv.shares %}
+  <tr>
+    <td><a href="/parcels/{{ s.parcel.id }}">{{ s.parcel.name }}</a></td>
+    <td>{{ s.share_count }}</td>
+    <td>{{ "{:,.0f}".format(s.price_per_share_egp * s.share_count) }}</td>
+  </tr>
+  {% else %}<tr><td colspan="3"><em>No holdings yet.</em></td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% set total_revenue = inv.payouts | map(attribute='amount_egp') | sum %}
+<h3>💵 Lease revenue <small>· total earned: {{ "{:,.0f}".format(total_revenue) }} EGP</small></h3>
+<div class="card">
+<table>
+  <thead><tr><th>Date</th><th>Parcel</th><th>Lease</th><th>Shares</th><th>Share %</th><th>Amount (EGP)</th></tr></thead>
+  <tbody>
+  {% for po in inv.payouts %}
+  <tr>
+    <td>{{ po.created_at.strftime('%Y-%m-%d') }}</td>
+    <td><a href="/parcels/{{ po.parcel.id }}">{{ po.parcel.name }}</a></td>
+    <td>{{ po.lease.season }} ({{ po.lease.farmer_name }})</td>
+    <td>{{ po.share_count }}</td>
+    <td>{{ "%.2f"|format(po.share_pct) }}%</td>
+    <td><b>{{ "{:,.0f}".format(po.amount_egp) }}</b></td>
+  </tr>
+  {% else %}<tr><td colspan="6"><em>No revenue yet — waiting for parcels to be leased.</em></td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<form method="post" action="/investors/{{ inv.id }}/match">
+  <strong>🤖 Find AI-matched parcels</strong>
+  <p style="margin:.25rem 0 .5rem; color:var(--soil-700); font-size:.9rem;">
+    Runs the LLM matcher against {{ inv.name }}'s profile and ranks all available parcels.
+  </p>
+  <button>Run matcher</button>
+</form>
+
+<p><a href="/investors">← all investors</a></p>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🌾 {{ p.name }} <span class="tier tier-{{ p.risk_tier }}">{{ p.risk_tier }} Risk</span></h2>
+
+<div class="card">
+  <div class="stat-row">
+    <div>📍 <b>{{ p.governorate }}</b></div>
+    <div>📐 <b>{{ p.area_feddan }}</b> feddan</div>
+    <div>💰 <b>{{ "{:,.0f}".format(p.price_egp) }}</b> EGP total</div>
+    <div>💵 <b>{{ "{:,.0f}".format(p.price_egp / p.area_feddan) }}</b> EGP/feddan</div>
+    <div>🪙 <b>{{ "{:,.0f}".format(price_per_share) }}</b> EGP/share</div>
+  </div>
+  <div class="stat-row" style="margin-top:.6rem;">
+    <div>🛣️ Road <b>{{ p.road_access }}/10</b></div>
+    <div>📊 Trend <b>{{ p.price_trend_pct }}%</b></div>
+  </div>
+</div>
+
+<h3>🤖 AI valuation</h3>
+<div class="card">
+  {% if p.fair_price_egp %}
+    <div class="stat-row">
+      <div>Fair price: <b>{{ "{:,.0f}".format(p.fair_price_egp) }}</b> EGP</div>
+      <div>Undervaluation:
+        <b style="color: {% if p.undervaluation_pct > 0 %}var(--leaf-700){% else %}var(--clay){% endif %};">
+          {{ "%+.1f"|format(p.undervaluation_pct) }}%
+        </b>
+      </div>
+      <div>Confidence: <b>{{ "%.2f"|format(p.undervaluation_confidence) }}</b></div>
+    </div>
+    <p style="margin:.75rem 0 0; color: var(--soil-700);">{{ p.undervaluation_reasoning }}</p>
+  {% else %}
+    <em>Not yet valuated.</em>
+  {% endif %}
+  <form method="post" action="/parcels/{{ p.id }}/ai/valuate" style="background:transparent; border:none; padding:.5rem 0 0;">
+    <button>🤖 Re-run AI valuation</button>
+  </form>
+</div>
+
+<h3>⚠️ AI risk assessment</h3>
+<div class="card">
+  {% if p.risk_reasoning %}
+    <div class="stat-row">
+      <div>Tier: <span class="tier tier-{{ p.risk_tier }}">{{ p.risk_tier }}</span></div>
+      {% if p.risk_score is not none %}<div>Score: <b>{{ "%.2f"|format(p.risk_score) }}</b>/10</div>{% endif %}
+    </div>
+    {% if risk_factors %}
+    <ul style="margin:.5rem 0 0;">
+      {% for f in risk_factors %}<li>{{ f }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+    <p style="margin:.75rem 0 0; color: var(--soil-700);">{{ p.risk_reasoning }}</p>
+  {% else %}
+    <em>Not yet assessed.</em>
+  {% endif %}
+  <form method="post" action="/parcels/{{ p.id }}/ai/risk" style="background:transparent; border:none; padding:.5rem 0 0;">
+    <button>🤖 Re-run AI risk model</button>
+  </form>
+</div>
+
+<h3>🌻 Ownership <small>({{ sold_shares }}/{{ shares_per_parcel }} shares sold · {{ remaining_shares }} open)</small></h3>
+<div class="bar"><span style="width: {{ sold_shares / shares_per_parcel * 100 }}%;"></span></div>
+
+<div class="card">
+<table>
+  <thead><tr><th>Investor</th><th>Shares</th><th>Price/share</th><th>Total (EGP)</th></tr></thead>
+  <tbody>
+  {% for s in p.shares %}
+  <tr>
+    <td><a href="/investors/{{ s.investor.id }}">{{ s.investor.name }}</a></td>
+    <td>{{ s.share_count }}</td>
+    <td>{{ "{:,.0f}".format(s.price_per_share_egp) }}</td>
+    <td>{{ "{:,.0f}".format(s.price_per_share_egp * s.share_count) }}</td>
+  </tr>
+  {% else %}<tr><td colspan="4"><em>No investors yet — be the first to plant capital here.</em></td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<form method="post" action="/parcels/{{ p.id }}/invest">
+  <strong>🌱 Buy shares</strong>
+  <input name="investor_id" type="number" min="1" placeholder="Investor ID" required>
+  <input name="share_count" type="number" min="1" max="{{ remaining_shares }}" placeholder="# shares (max {{ remaining_shares }})" required>
+  <button>Invest</button>
+</form>
+
+<h3>🚜 Leases <small>· total revenue paid out: {{ "{:,.0f}".format(total_payouts) }} EGP</small></h3>
+
+<div class="card">
+  <div class="stat-row">
+    <div>🏷️ Company lease price:
+      <b>{% if p.lease_price_egp_per_season > 0 %}{{ "{:,.0f}".format(p.lease_price_egp_per_season) }} EGP / season{% else %}— not set{% endif %}</b>
+    </div>
+  </div>
+  <form method="post" action="/parcels/{{ p.id }}/lease_price" style="background:transparent; border:none; padding:.5rem 0 0;">
+    <input name="lease_price_egp_per_season" type="number" step="1" min="0" placeholder="Set/update price (EGP/season)" value="{{ p.lease_price_egp_per_season or '' }}" required>
+    <button style="background:var(--soil-700);">💼 Set company price</button>
+  </form>
+</div>
+
+<div class="card" style="margin-top:1rem;">
+<table>
+  <thead><tr><th>Farmer</th><th>Season</th><th>Rent (EGP)</th><th>Start</th><th>End</th></tr></thead>
+  <tbody>
+  {% for l in p.leases %}
+  <tr><td>{{ l.farmer_name }}</td><td>{{ l.season }}</td><td>{{ "{:,.0f}".format(l.rent_egp) }}</td>
+      <td>{{ l.start_date }}</td><td>{{ l.end_date }}</td></tr>
+  {% else %}<tr><td colspan="5"><em>No leases yet — land is fallow.</em></td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+
+<form method="post" action="/parcels/{{ p.id }}/lease">
+  <strong>🌾 Farmer leases this parcel</strong>
+  {% if p.lease_price_egp_per_season > 0 %}
+    <p style="margin:.25rem 0 .5rem; color:var(--soil-700); font-size:.9rem;">
+      Rent fixed at <b>{{ "{:,.0f}".format(p.lease_price_egp_per_season) }} EGP/season</b> by the company.
+      Revenue auto-distributes to {{ p.shares|length }} share-holder(s) pro-rata.
+    </p>
+    <input name="farmer_name" placeholder="Farmer name" required>
+    <input name="season" placeholder="e.g. Winter 2026" required>
+    <input name="start_date" type="date" required>
+    <input name="end_date" type="date" required>
+    <button>Sign lease</button>
+  {% else %}
+    <p style="margin:.25rem 0 .5rem; color:var(--clay);">Set a company lease price above first.</p>
+  {% endif %}
+</form>
+
+<p><a href="/">← back to all parcels</a></p>
+{% endblock %}

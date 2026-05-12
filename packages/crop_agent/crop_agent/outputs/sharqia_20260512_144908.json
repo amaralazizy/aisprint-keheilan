@@ -1,0 +1,497 @@
+{
+  "output": {
+    "top": {
+      "rank": 1,
+      "crop": "wheat",
+      "confidence_pct": 85,
+      "score_breakdown": {
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7
+      },
+      "yield_range_t_per_feddan": [
+        2.5,
+        3.8
+      ],
+      "revenue_egp_per_feddan": [
+        24255.0,
+        29452.5,
+        32917.5
+      ],
+      "amendment_plan": [],
+      "pest_calendar": [
+        {
+          "month": "Dec",
+          "pest": "aphids",
+          "action": "scout weekly; threshold 10/tiller"
+        },
+        {
+          "month": "Feb",
+          "pest": "yellow rust",
+          "action": "apply triazole if observed"
+        },
+        {
+          "month": "Mar",
+          "pest": "Hessian fly",
+          "action": "rotation; resistant cultivars"
+        }
+      ],
+      "trade_offs": "no major trade-offs flagged"
+    },
+    "alternatives": [
+      {
+        "rank": 2,
+        "crop": "onion",
+        "confidence_pct": 85,
+        "score_breakdown": {
+          "soil_fit": 1.0,
+          "timing": 1.0,
+          "market": 0.7,
+          "water": 1.0,
+          "risk": 0.7
+        },
+        "yield_range_t_per_feddan": [
+          10.0,
+          16.0
+        ],
+        "revenue_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          89375.0
+        ],
+        "amendment_plan": [],
+        "pest_calendar": [],
+        "trade_offs": "no major trade-offs flagged"
+      },
+      {
+        "rank": 3,
+        "crop": "potato",
+        "confidence_pct": 85,
+        "score_breakdown": {
+          "soil_fit": 1.0,
+          "timing": 1.0,
+          "market": 0.7,
+          "water": 1.0,
+          "risk": 0.7
+        },
+        "yield_range_t_per_feddan": [
+          8.0,
+          14.0
+        ],
+        "revenue_egp_per_feddan": [
+          53900.0,
+          65450.0,
+          96250.0
+        ],
+        "amendment_plan": [],
+        "pest_calendar": [],
+        "trade_offs": "no major trade-offs flagged"
+      }
+    ],
+    "assumptions": [],
+    "overall_confidence_pct": 55,
+    "language": "en",
+    "generated_at": "2026-05-12T11:49:08.049325Z"
+  },
+  "justification": {
+    "parsed_input": {
+      "raw": {
+        "latitude": 30.71,
+        "longitude": 31.74,
+        "area_feddan": 5.0,
+        "water_source": "nile_canal",
+        "soil_type": "clay",
+        "budget_egp": 25000.0,
+        "start_date": "2026-11-15",
+        "harvest_horizon_days": 180,
+        "goal": "profit",
+        "language": "en",
+        "ph": null,
+        "nitrogen_ppm": null,
+        "phosphorus_ppm": null,
+        "potassium_ppm": null,
+        "salinity_ds_m": null,
+        "soil_depth_cm": null,
+        "cec": null,
+        "irrigation_type": null,
+        "last_crop": null,
+        "last_harvest_date": null,
+        "crop_history_success": [],
+        "crop_history_failure": [],
+        "past_diseases": [],
+        "years_since_reclamation": null
+      },
+      "governorate": "Sharqia",
+      "season": "shitawi",
+      "area_hectare": 2.1,
+      "soil_profile": {},
+      "anomalies": []
+    },
+    "planned_queries": [
+      {
+        "text": "What are the most profitable winter crops suitable for clay soil and Nile canal irrigation in Sharqia governorate with a 180-day harvest horizon?",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "To identify initial crop candidates that match the farmer's environmental conditions, harvest horizon, and profit goal."
+      },
+      {
+        "text": "Historical average farm-gate prices for common winter crops (e.g., wheat, fava beans, clover) in Sharqia during April-May, and typical input costs per feddan for these crops.",
+        "language": "en",
+        "category": "fixed_knowledge",
+        "rationale": "To help the farmer estimate potential revenue and align with their budget and profit goal, considering historical market trends."
+      },
+      {
+        "text": "Current EGP to USD exchange rate and average market prices for key fertilizers (urea, DAP, potassium) in Sharqia governorate.",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "To assess the current cost of essential imported inputs, which directly impacts the farmer's budget and overall profitability due to EGP devaluation."
+      },
+      {
+        "text": "Latest Nile flow bulletin and water availability forecast for the Delta region, specifically Sharqia canals, for the 2026/2027 winter season.",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "To understand potential water constraints or abundance that could affect irrigation planning for Nile-dependent farming in Sharqia."
+      },
+      {
+        "text": "FAO EMPRES alerts for significant pest or disease outbreaks affecting winter crops (e.g., wheat rust, fava bean diseases) in Egypt or the MENA region.",
+        "language": "en",
+        "category": "live_signal",
+        "rationale": "To proactively identify potential biological risks that could impact crop yield and profitability, allowing for preventative measures."
+      },
+      {
+        "text": "قرارات وزارة الزراعة واستصلاح الأراضي بشأن المحاصيل الشتوية المقيدة أو المدعومة في محافظة الشرقية لموسم 2026/2027.",
+        "language": "ar",
+        "category": "arabic_ministry",
+        "rationale": "To ensure compliance with agricultural policies and identify potential subsidy opportunities or restrictions for the farmer in Sharqia."
+      }
+    ],
+    "evidence": [
+      {
+        "fact": "Rice cultivation is restricted in Egypt by Ministerial Decree 26/2025.",
+        "value": null,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "6cde600b",
+        "language": "en"
+      },
+      {
+        "fact": "Rice cultivation is limited to 9 governorates in Egypt.",
+        "value": 9.0,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "6cde600b",
+        "language": "en"
+      },
+      {
+        "fact": "The total area for rice cultivation in Egypt is limited to 1,074,200 feddan.",
+        "value": 1074200.0,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "6cde600b",
+        "language": "en"
+      },
+      {
+        "fact": "Rice cultivation is restricted in Egypt by Ministerial Decree 26/2025",
+        "value": null,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "ff9f2146",
+        "language": "en"
+      },
+      {
+        "fact": "Rice cultivation is limited to 9 governorates in Egypt",
+        "value": 9.0,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "ff9f2146",
+        "language": "en"
+      },
+      {
+        "fact": "Total area for rice cultivation in Egypt is 1,074,200 feddan",
+        "value": 1074200.0,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "ff9f2146",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta (tomato leafminer) outbreak reported in Egypt Delta governorates.",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "a1e216f5",
+        "language": "en"
+      },
+      {
+        "fact": "Rice cultivation in Egypt is restricted to 9 governorates.",
+        "value": 9.0,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "a5abc911",
+        "language": "en"
+      },
+      {
+        "fact": "The total restricted area for rice cultivation in Egypt is 1,074,200 feddan.",
+        "value": 1074200.0,
+        "source_url": "https://example.gov.eg/decree-26",
+        "source_name": "Egypt Ministerial Decree 26/2025 restricts rice cultivation",
+        "source_date": "2025-01-15",
+        "confidence": "high",
+        "query_id": "a5abc911",
+        "language": "en"
+      },
+      {
+        "fact": "Tuta absoluta (tomato leafminer) outbreak reported across Delta governorates in Egypt.",
+        "value": null,
+        "source_url": "https://fao.org/empres/example",
+        "source_name": "FAO EMPRES alert: tomato leafminer Egypt Delta",
+        "source_date": "2026-04-10",
+        "confidence": "high",
+        "query_id": "d9a41446",
+        "language": "en"
+      }
+    ],
+    "conflicts": [],
+    "scores": [
+      {
+        "crop": "wheat",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 450 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "onion",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 450 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "potato",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 500 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "sugar_beet",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 600 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "alfalfa",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 1200 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "barley",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.7,
+        "overall": 0.85,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 380 mm; source nile_canal",
+          "risk": ""
+        },
+        "vetoes": []
+      },
+      {
+        "crop": "tomato",
+        "soil_fit": 1.0,
+        "timing": 1.0,
+        "market": 0.7,
+        "water": 1.0,
+        "risk": 0.39999999999999997,
+        "overall": 0.8049999999999999,
+        "rationale": {
+          "soil_fit": "",
+          "timing": "season shitawi matches",
+          "market": "baseline price assumed",
+          "water": "need 550 mm; source nile_canal",
+          "risk": "active pest/disease alert mentions this crop"
+        },
+        "vetoes": []
+      }
+    ],
+    "scenarios": [
+      {
+        "crop": "wheat",
+        "drought_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "devaluation_egp_per_feddan": [
+          25987.5,
+          29452.5,
+          32917.5
+        ],
+        "pest_egp_per_feddan": [
+          24255.0,
+          29452.5,
+          32917.5
+        ],
+        "collapses_under": []
+      },
+      {
+        "crop": "onion",
+        "drought_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          67925.0
+        ],
+        "devaluation_egp_per_feddan": [
+          67925.0,
+          78650.0,
+          89375.0
+        ],
+        "pest_egp_per_feddan": [
+          50050.0,
+          60775.0,
+          67925.0
+        ],
+        "collapses_under": []
+      },
+      {
+        "crop": "potato",
+        "drought_egp_per_feddan": [
+          53900.0,
+          65450.0,
+          73150.0
+        ],
+        "devaluation_egp_per_feddan": [
+          73150.0,
+          84700.0,
+          96250.0
+        ],
+        "pest_egp_per_feddan": [
+          53900.0,
+          65450.0,
+          73150.0
+        ],
+        "collapses_under": []
+      }
+    ],
+    "assumptions": [],
+    "reflection_rounds": 1,
+    "reflection_log": [
+      {
+        "round": 1,
+        "uncertainties": [
+          "Whether Sharqia governorate is one of the 9 governorates permitted for rice cultivation under Ministerial Decree 26/2025.",
+          "The current status and relevance of the Tuta absoluta outbreak for the upcoming Shitawi season in Sharqia governorate."
+        ],
+        "follow_up_count": 2,
+        "should_replan": false
+      }
+    ],
+    "critique_passed": false,
+    "trace": [
+      "[pipeline] starting at lat=30.71, lon=31.74",
+      "[stage_2] starting parse + anomaly detect",
+      "[stage_2] governorate=Sharqia, season=shitawi, anomalies=0",
+      "[stage_3] planning queries",
+      "[stage_3] planned 6 queries across 3 categories",
+      "[stage_4_5] starting parallel search + extraction",
+      "[stage_4_5] extracted 7 new evidence items",
+      "[stage_6] reflection round 1",
+      "[stage_6] dropped malformed follow-up: 1 validation error for PlannedQuery\ncategory\n  Input should be 'fixed_knowledge', 'live_signal' or 'arabic_ministry' [type=literal_error, input_value='Legal/Regulatory', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+      "[stage_6] dropped malformed follow-up: 1 validation error for PlannedQuery\ncategory\n  Input should be 'fixed_knowledge', 'live_signal' or 'arabic_ministry' [type=literal_error, input_value='Pest/Disease', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/literal_error",
+      "[stage_4_5] starting parallel search + extraction",
+      "[stage_4_5] extracted 3 new evidence items",
+      "[stage_6] reflection finished after 1 rounds",
+      "[stage_7_8] scoring all crops across dimensions",
+      "[stage_7_8] scored 7 candidate crops",
+      "[stage_9] applying weighted scoring",
+      "[stage_9] weights for goal=profit: {'soil_fit': 0.2, 'timing': 0.15, 'market': 0.35, 'water': 0.15, 'risk': 0.15}",
+      "[stage_9] top 3: ['wheat', 'onion', 'potato']",
+      "[stage_10] running scenario simulations",
+      "[stage_10] simulated 3 crops; collapses: [('wheat', []), ('onion', []), ('potato', [])]",
+      "[stage_11] running self-critique",
+      "[stage_11] critique issue [block]: Cannot assess plausibility of EGP revenue figures per feddan as no baseline or contextual information (e.g., typical yields, current market prices, cost of inputs for the region) was provided for comparison.",
+      "[stage_11] critique issue [block]: Assumptions are not explicitly listed and tagged in the dedicated 'Assumptions made' section. While some assumptions are present in the 'rationale' fields (e.g., 'baseline price assumed', 'season shitawi matches', 'source nile_canal'), the 'Assumptions made' list is empty, which is a critical omission for transparency and auditability.",
+      "[stage_11] critique issue [warn]: The 'market' score for the top candidate (wheat) is 0.7, with the rationale 'baseline price assumed'. This indicates a reliance on a general assumption rather than specific, real-time market data, which could be a point of weakness in the ranking's foundation.",
+      "[stage_12] building final output",
+      "[stage_12] finished — top=wheat, conf=55%",
+      "[pipeline] finished"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+[project]
+name = "keheilan"
+version = "0.1.0"
+description = "Keheilan AISPRINT — fractional agriculture platform (workspace root)"
+requires-python = ">=3.10"
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+crop_agent = { workspace = true }
+model1_land = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.23",
+]

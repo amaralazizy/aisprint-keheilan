@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🌱 Available parcels</h2>
+
+<div class="filters">
+  <span class="label">Risk tier:</span>
+  <a href="/">All</a>
+  <a href="/?tier=High">🔥 High</a>
+  <a href="/?tier=Medium">🌤 Medium</a>
+  <a href="/?tier=Low">🌳 Low</a>
+  <span class="label" style="margin-left:auto;"><a href="/investors">👥 Investors</a></span>
+  {% if tier %}<em>· showing {{ tier }}</em>{% endif %}
+</div>
+
+<div class="card">
+<table>
+  <thead>
+    <tr><th>Parcel</th><th>Governorate</th><th>Feddan</th><th>Total (EGP)</th><th>EGP/feddan</th><th>Share (EGP)</th><th>AI fair</th><th>Risk</th></tr>
+  </thead>
+  <tbody>
+  {% for p in parcels %}
+  <tr>
+    <td><a href="/parcels/{{ p.id }}">🌾 {{ p.name }}</a></td>
+    <td>{{ p.governorate }}</td>
+    <td>{{ p.area_feddan }}</td>
+    <td>{{ "{:,.0f}".format(p.price_egp) }}</td>
+    <td>{{ "{:,.0f}".format(p.price_egp / p.area_feddan) }}</td>
+    <td>{{ "{:,.0f}".format(p.price_egp / shares_per_parcel) }}</td>
+    <td>{% if p.undervaluation_pct is not none %}
+        <span style="color: {% if p.undervaluation_pct > 0 %}var(--leaf-700){% else %}var(--clay){% endif %};">
+          {{ "%+.1f"|format(p.undervaluation_pct) }}%
+        </span>
+        {% else %}—{% endif %}</td>
+    <td><span class="tier tier-{{ p.risk_tier }}">{{ p.risk_tier }}</span></td>
+  </tr>
+  {% else %}
+  <tr><td colspan="8"><em>No parcels yet. Run <code>uv run python -m model1_land.seed</code>.</em></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
