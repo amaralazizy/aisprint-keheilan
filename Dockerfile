@@ -24,13 +24,10 @@ RUN uv sync --all-packages --frozen --no-dev
 
 ENV PATH="/app/.venv/bin:${PATH}"
 
-# Default DB path points at the persistent volume mounted by Fly.
-ENV DATABASE_URL="sqlite:////data/model1_land.db"
+# DATABASE_URL must be supplied by the host (Render → Neon connection string).
+# Falls back to local SQLite file inside the container if missing.
 
-# Ensure /data exists for first boot (Fly mounts volume there).
-RUN mkdir -p /data
-
-# Entrypoint: seed (if empty) then start uvicorn on $PORT.
+# Entrypoint: seed (idempotent) then start uvicorn on $PORT.
 COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
