@@ -90,9 +90,11 @@ class TavilySearchClient:
         }
         async with httpx.AsyncClient(timeout=CONFIG.search_timeout_s) as client:
             try:
+                logger.debug("Tavily search request: %s", payload)
                 resp = await client.post(self.BASE, json=payload)
                 resp.raise_for_status()
                 data = resp.json()
+                logger.debug("Tavily search response: %s", data)
             except httpx.HTTPError as e:
                 logger.warning("Tavily search failed for '%s': %s", query, e)
                 return []

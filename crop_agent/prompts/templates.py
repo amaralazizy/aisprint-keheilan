@@ -16,22 +16,17 @@ from ..models import ParsedInput
 
 # ---------- Stage 3: planner ----------
 
-PLANNER_SYSTEM = """You are the query planner for an Egyptian crop recommendation agent.
+PLANNER_SYSTEM = """You are the query planner for an Egyptian crop evaluation agent.
 
-Your job: given parsed farmer inputs and any anomalies, decide WHAT TO SEARCH FOR.
+Your job: given parsed farmer inputs and a specific TARGET CROP, decide WHAT TO SEARCH FOR to evaluate whether this crop will be successful or not.
 
-You do NOT have a fixed list. Generate queries that are actually useful for THIS
-farmer in THIS governorate at THIS time. Egypt-specific signals matter:
-- Ministerial decrees that restrict crops by governorate
-- EGP devaluation and fertiliser import costs
-- Nile flow bulletins (GERD downstream effects)
-- FAO EMPRES outbreak alerts
-- MALR Arabic extension bulletins
+You do NOT have a fixed list of constraints. Generate a broad and comprehensive set of queries that are actually useful for evaluating the suitability of the target crop for THIS specific land. Since all lands evaluated by this system are in Egypt, searching generally for "Egypt" is NOT unique enough. You MUST formulate queries that focus on the unique aspects of this specific land: its exact governorate, local soil type (e.g. clay vs sandy), and season. You should ask all beneficial questions related to the crop's viability in these specific local conditions, local pests, local market conditions, and required soil amendments.
+IMPORTANT: You MUST explicitly include the name of the governorate AND "Egypt" (or "مصر" in Arabic) in the actual text of your queries to ensure search engines return highly localized results.
 
 Each query must be tagged with:
-- category: "fixed_knowledge" | "live_signal" | "arabic_ministry"
-- language: "en" or "ar" — pick Arabic for MALR/CAPMAS/MWRI sources
-- rationale: one sentence explaining why this query, for THIS farmer
+- category: "agronomic_research" | "local_news_and_market"
+- language: "en" or "ar" — you MUST use Arabic ("ar") for the majority of queries, as local sources (CAPMAS, MALR, local news) are in Arabic.
+- rationale: one sentence explaining why this query helps evaluate the target crop for THIS farmer
 
 Generate 6–9 queries total. At least 1 per category.
 """
@@ -39,13 +34,13 @@ Generate 6–9 queries total. At least 1 per category.
 
 def planner_user(parsed: ParsedInput) -> str:
     return f"""Parsed farmer context:
+- Target Crop to Evaluate: {parsed.raw.target_crop}
 - Governorate: {parsed.governorate}
 - Season: {parsed.season}
 - Coordinates: {parsed.raw.latitude}, {parsed.raw.longitude}
 - Area: {parsed.raw.area_feddan} feddan
 - Water source: {parsed.raw.water_source.value}
 - Soil type: {parsed.raw.soil_type}
-- Goal: {parsed.raw.goal.value}
 - Budget: {parsed.raw.budget_egp} EGP
 - Start date: {parsed.raw.start_date}
 - Harvest horizon: {parsed.raw.harvest_horizon_days} days
@@ -91,18 +86,17 @@ Extract atomic facts as a JSON array.
 
 # ---------- Stage 6: reflection ----------
 
-REFLECTION_SYSTEM = """You are auditing the evidence gathered so far for a crop recommendation.
+REFLECTION_SYSTEM = """You are auditing the evidence gathered so far for evaluating the target crop.
 
-Ask yourself: WHAT AM I STILL UNCERTAIN ABOUT that would actually change the ranking?
+Ask yourself: WHAT AM I STILL UNCERTAIN ABOUT that would actually change the evaluation (pros, cons, score) of the target crop?
 
 Examples of changing uncertainties:
-- A ministerial decree we haven't verified for this governorate
-- Current EGP/USD rate for revenue calculations
-- An active disease alert for a top candidate crop
-- Conflicting yield numbers between sources
+- An active disease alert for the target crop
+- Unclear market prices or demand for the target crop in Egypt
+- Conflicts about the crop's suitability for the specific soil type
 
 Examples of non-changing uncertainties (DO NOT search for these):
-- Minor numeric disagreements that won't flip ranks
+- Minor numeric disagreements that won't flip the conclusion
 - Historical context not relevant to next season
 - General agronomy already established by high-confidence sources
 
@@ -113,7 +107,7 @@ Output JSON:
   "should_replan": boolean  // true if we missed a whole category, not just a fact
 }
 
-The category field MUST be exactly one of these three strings: "fixed_knowledge", "live_signal", "arabic_ministry". No other values are accepted. Do not invent values like "economic" or "agronomy" — map them onto the three allowed categories.
+The category field MUST be exactly one of these two strings: "agronomic_research", "local_news_and_market". No other values are accepted. Do not invent values like "economic" or "agronomy" — map them onto the two allowed categories.
 
 Maximum 3 follow-up queries. If nothing critical is uncertain, return empty arrays.
 """
@@ -137,13 +131,13 @@ What am I still uncertain about that would change the ranking?
 
 # ---------- Stage 11: self-critique ----------
 
-CRITIQUE_SYSTEM = """You are the final auditor before recommendations ship to a farmer.
+CRITIQUE_SYSTEM = """You are the final auditor before the evaluation ships to a farmer.
 
-Check the proposed ranking for:
-1. Did any LOW-confidence fact drive the #1 rank? If yes, flag it.
+Check the proposed crop evaluation for:
+1. Did any LOW-confidence fact drive the score? If yes, flag it.
 2. Are the EGP revenue figures plausible for the area and crop?
 3. Are all assumptions explicit and tagged?
-4. Did we miss any veto signal (ministerial decree, active outbreak)?
+4. Did we miss any veto signal (ministerial decree, active outbreak) for this crop?
 5. Does the language of the output match the farmer's input language?
 
 Output JSON:
@@ -155,12 +149,9 @@ Output JSON:
 """
 
 
-def critique_user(top_score: str, alt_scores: str, scenarios: str, assumptions: str) -> str:
-    return f"""Top candidate:
-{top_score}
-
-Alternatives:
-{alt_scores}
+def critique_user(crop_score: str, scenarios: str, assumptions: str) -> str:
+    return f"""Crop Evaluation Score:
+{crop_score}
 
 Scenario outcomes:
 {scenarios}

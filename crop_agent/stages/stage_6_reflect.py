@@ -45,7 +45,7 @@ def _summarise_parsed(state: PipelineState) -> str:
     p = state.parsed
     return (
         f"governorate={p.governorate}, season={p.season}, "
-        f"area={p.raw.area_feddan} feddan, goal={p.raw.goal.value}, "
+        f"area={p.raw.area_feddan} feddan, "
         f"anomalies={[a.field for a in p.anomalies]}"
     )
 

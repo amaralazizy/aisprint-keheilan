@@ -39,7 +39,7 @@ async def run_stage_3_plan(state: PipelineState, llm: LLMClient) -> PipelineStat
     # a category, log it. We could also retry, but logging is cheaper for
     # debugging the first time you see this happen.
     categories = {q.category for q in queries}
-    for needed in ("fixed_knowledge", "live_signal", "arabic_ministry"):
+    for needed in ("agronomic_research", "local_news_and_market"):
         if needed not in categories:
             state.log("stage_3", f"WARNING: no query in category {needed}")
 

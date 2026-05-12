@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 
 from ..clients.llm import LLMClient
 from ..models import (
-    CropRecommendation,
+    SingleCropEvaluation,
     FinalOutput,
     PestCalendarEntry,
 )
@@ -126,20 +126,18 @@ async def run_stage_11_critique(state: PipelineState, llm: LLMClient) -> Pipelin
     state.log("stage_11", "running self-critique")
     state.assumptions = _collect_assumptions(state)
 
-    if not state.scores or state.scores[0].overall == 0:
+    if not state.scores:
         state.log("stage_11", "no viable crop — skipping LLM critique")
         state.critique_passed = False
         return state
 
     top = state.scores[0]
-    alts = state.scores[1:3]
 
     try:
         result = await llm.chat_json(
             system=CRITIQUE_SYSTEM,
             user=critique_user(
-                top_score=top.model_dump_json(indent=2),
-                alt_scores=json.dumps([a.model_dump() for a in alts], indent=2),
+                crop_score=top.model_dump_json(indent=2),
                 scenarios=json.dumps([s.model_dump() for s in state.scenarios], indent=2, default=str),
                 assumptions=json.dumps(state.assumptions, indent=2),
             ),
@@ -160,8 +158,14 @@ async def run_stage_11_critique(state: PipelineState, llm: LLMClient) -> Pipelin
 
 # ---------- Stage 12: final output ----------
 
-def _build_recommendation(rank: int, score, state: PipelineState) -> CropRecommendation:
-    profile = CROPS[score.crop]
+def _build_evaluation(score, state: PipelineState) -> SingleCropEvaluation:
+    crop_name = score.crop
+    if crop_name in CROPS:
+        profile = CROPS[crop_name]
+        yield_range = profile.typical_yield_t_per_feddan
+    else:
+        yield_range = (2.0, 5.0)
+
     scenarios = next((s for s in state.scenarios if s.crop == score.crop), None)
 
     if scenarios:
@@ -172,14 +176,27 @@ def _build_recommendation(rank: int, score, state: PipelineState) -> CropRecomme
             max(scenarios.drought_egp_per_feddan[2], scenarios.devaluation_egp_per_feddan[2], scenarios.pest_egp_per_feddan[2]),
         )
     else:
-        yield_mid = sum(profile.typical_yield_t_per_feddan) / 2
-        base = yield_mid * profile.market_price_egp_per_ton
-        revenue_range = (base * 0.7, base, base * 1.2)
+        revenue_range = (10000.0, 20000.0, 30000.0)
 
     amendments = getattr(state, "_amendments", {}).get(score.crop, [])
     pest_calendar = _pest_calendar_for(score.crop, state.parsed.season)
 
-    trade_offs = _format_trade_offs(score, scenarios)
+    pros = []
+    cons = []
+    for dim, rat in score.rationale.items():
+        if "penalising" in rat or "default" in rat or "baseline" in rat:
+            pass # neutral
+        elif "reduced" in rat or "unknown" in rat or "exceeds" in rat or "low" in rat or "insufficient" in rat or "excess" in rat or "veto" in rat or "alert" in rat or "ban" in rat or "marginal" in rat or "not preferred" in rat or "outside" in rat:
+            cons.append(f"{dim}: {rat}")
+        else:
+            pros.append(f"{dim}: {rat}")
+
+    if score.vetoes:
+        for v in score.vetoes:
+            cons.append(f"VETO: {v}")
+    
+    if scenarios and scenarios.collapses_under:
+        cons.append(f"Vulnerable to: {', '.join(scenarios.collapses_under)}")
 
     # Confidence: average evidence confidence (high=1, medium=0.6, low=0.3)
     # times the overall score
@@ -190,8 +207,7 @@ def _build_recommendation(rank: int, score, state: PipelineState) -> CropRecomme
         avg_ev_conf = 0.5
     confidence_pct = int(min(95, max(20, score.overall * avg_ev_conf * 100)))
 
-    return CropRecommendation(
-        rank=rank,
+    return SingleCropEvaluation(
         crop=score.crop,
         confidence_pct=confidence_pct,
         score_breakdown={
@@ -201,11 +217,13 @@ def _build_recommendation(rank: int, score, state: PipelineState) -> CropRecomme
             "water": round(score.water, 3),
             "risk": round(score.risk, 3),
         },
-        yield_range_t_per_feddan=profile.typical_yield_t_per_feddan,
+        yield_range_t_per_feddan=yield_range,
         revenue_egp_per_feddan=revenue_range,
         amendment_plan=amendments,
         pest_calendar=pest_calendar,
-        trade_offs=trade_offs,
+        pros=pros,
+        cons=cons,
+        recommendation_text="",  # Filled later
     )
 
 
@@ -249,41 +267,32 @@ def _format_trade_offs(score, scenarios) -> str:
 def run_stage_12_output(state: PipelineState) -> PipelineState:
     state.log("stage_12", "building final output")
 
-    viable = [s for s in state.scores if s.overall > 0]
-    if not viable:
-        state.log("stage_12", "NO viable crops — output will indicate this")
+    if not state.scores:
+        state.log("stage_12", "NO viable crops to evaluate")
+        return state
 
-    top = _build_recommendation(1, viable[0], state) if viable else None
-    alternatives = [_build_recommendation(i + 2, s, state) for i, s in enumerate(viable[1:3])]
+    eval_obj = _build_evaluation(state.scores[0], state)
 
-    # Apply critique adjustment, then make the per-crop and overall confidence
-    # numbers agree (Fix 7). Surface the deduction as an explicit assumption.
-    if top:
-        raw_top_conf = top.confidence_pct
-        adj = getattr(state, "_confidence_adjustment", 0)
-        overall_conf = max(20, min(95, raw_top_conf + adj))
-        top.confidence_pct = overall_conf
-        for alt in alternatives:
-            alt.confidence_pct = max(20, min(95, alt.confidence_pct + adj))
-        if adj < 0:
-            state.assumptions.append({
-                "text": f"Confidence reduced by {abs(adj)} points by self-critique (raw {raw_top_conf}% → adjusted {overall_conf}%)",
-                "confidence": "high",
-                "source": "self_critique",
-            })
-    else:
-        raw_top_conf = 0
-        overall_conf = 0
+    raw_conf = eval_obj.confidence_pct
+    adj = getattr(state, "_confidence_adjustment", 0)
+    overall_conf = max(20, min(95, raw_conf + adj))
+    eval_obj.confidence_pct = overall_conf
+    
+    if adj < 0:
+        state.assumptions.append({
+            "text": f"Confidence reduced by {abs(adj)} points by self-critique (raw {raw_conf}% → adjusted {overall_conf}%)",
+            "confidence": "high",
+            "source": "self_critique",
+        })
 
     state.output = FinalOutput(
-        top=top,
-        alternatives=alternatives,
+        evaluation=eval_obj,
         assumptions=state.assumptions,
         overall_confidence_pct=overall_conf,
         language=state.raw.language,
         generated_at=datetime.now(timezone.utc),
     )
     # Stash the pre-adjustment top confidence for narrative reasoning.
-    state._raw_top_confidence_pct = raw_top_conf
-    state.log("stage_12", f"finished — top={top.crop if top else 'NONE'}, conf={overall_conf}%")
+    state._raw_top_confidence_pct = raw_conf
+    state.log("stage_12", f"finished — eval={eval_obj.crop}, conf={overall_conf}%")
     return state

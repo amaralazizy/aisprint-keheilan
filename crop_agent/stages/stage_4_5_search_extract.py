@@ -34,7 +34,7 @@ async def _search_and_extract(
 
     async with sem:
         results: list[SearchResult] = await search.search(
-            query.text, language=query.language, max_results=5
+            query.text, language=query.language, max_results=4
         )
 
     if not results:

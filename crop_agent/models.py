@@ -17,12 +17,6 @@ from pydantic import BaseModel, Field
 
 # ---------- Stage 1: raw inputs ----------
 
-class FarmerGoal(str, Enum):
-    PROFIT = "profit"
-    SUBSISTENCE = "subsistence"
-    EXPORT = "export"
-    LOW_RISK = "low_risk"
-
 
 class WaterSource(str, Enum):
     NILE_CANAL = "nile_canal"
@@ -34,6 +28,7 @@ class WaterSource(str, Enum):
 class RawInput(BaseModel):
     """What the farmer (or front-end) hands us. Most optionals can be blank."""
     # Mandatory
+    target_crop: str
     latitude: float
     longitude: float
     area_feddan: float
@@ -42,7 +37,6 @@ class RawInput(BaseModel):
     budget_egp: float
     start_date: date
     harvest_horizon_days: int
-    goal: FarmerGoal = FarmerGoal.PROFIT
     language: Literal["en", "ar"] = "en"
 
     # Optional — agent fills from SoilGrids if missing
@@ -85,7 +79,7 @@ class Anomaly(BaseModel):
 
 # ---------- Stage 3: query planner ----------
 
-QueryCategory = Literal["fixed_knowledge", "live_signal", "arabic_ministry"]
+QueryCategory = Literal["agronomic_research", "local_news_and_market"]
 
 class PlannedQuery(BaseModel):
     text: str
@@ -152,8 +146,7 @@ class PestCalendarEntry(BaseModel):
     action: str
 
 
-class CropRecommendation(BaseModel):
-    rank: int
+class SingleCropEvaluation(BaseModel):
     crop: str
     confidence_pct: int
     score_breakdown: dict[str, float]
@@ -161,12 +154,13 @@ class CropRecommendation(BaseModel):
     revenue_egp_per_feddan: tuple[float, float, float]  # pess, base, opt
     amendment_plan: list[AmendmentStep]
     pest_calendar: list[PestCalendarEntry]
-    trade_offs: str
+    pros: list[str]
+    cons: list[str]
+    recommendation_text: str
 
 
 class FinalOutput(BaseModel):
-    top: CropRecommendation
-    alternatives: list[CropRecommendation]
+    evaluation: SingleCropEvaluation
     assumptions: list[dict]  # {text, confidence, source}
     overall_confidence_pct: int
     language: Literal["en", "ar"]

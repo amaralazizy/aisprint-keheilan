@@ -75,7 +75,7 @@ GOVERNORATE_BBOX = {
     "Beheira":     (30.30, 31.20, 30.10, 30.80),
     "Kafr El Sheikh": (31.00, 31.50, 30.70, 31.30),
     "Dakahlia":    (30.80, 31.40, 31.10, 31.90),
-    "Sharqia":     (30.20, 31.00, 31.40, 32.10),
+    "Sharqia":     (30.20, 31.20, 31.40, 32.20),
     "Gharbia":     (30.50, 31.05, 30.80, 31.30),
     "Menoufia":    (30.30, 30.80, 30.80, 31.30),
     "Qalyubia":    (30.10, 30.55, 31.00, 31.50),
@@ -160,20 +160,29 @@ async def run_stage_2_parse(state: PipelineState, soilgrids: SoilGridsClient | N
     if raw.cec is not None:
         add("cec", raw.cec, "user", "high")
 
-    # Fill gaps from SoilGrids — retry once with backoff if the first call is empty
+    # Fill gaps from SoilGrids — search nearby points if the exact one is masked
     if soilgrids and any(k not in soil_profile for k in ("ph", "nitrogen", "cec")):
         sg: dict = {}
-        for attempt in (1, 2):
+        # 0.0025 degrees is roughly 250-300 meters. Try center, then N, E, S, W.
+        offsets = [(0, 0), (0.0025, 0), (0, 0.0025), (-0.0025, 0), (0, -0.0025)]
+        
+        for idx, (dlat, dlon) in enumerate(offsets):
+            search_lat = raw.latitude + dlat
+            search_lon = raw.longitude + dlon
             try:
-                sg = await soilgrids.query_profile(raw.latitude, raw.longitude)
-            except Exception as e:  # network/parse failures are non-fatal
-                state.log("stage_2", f"SoilGrids attempt {attempt} failed: {e}")
+                sg = await soilgrids.query_profile(search_lat, search_lon)
+            except Exception as e:
+                state.log("stage_2", f"SoilGrids attempt {idx+1} failed: {e}")
                 sg = {}
+                
             if sg:
+                if idx > 0:
+                    state.log("stage_2", f"SoilGrids: original point was empty, found data ~300m away at offset {dlat}, {dlon}")
                 break
-            if attempt == 1:
-                state.log("stage_2", "SoilGrids returned empty — retrying once after backoff")
-                await asyncio.sleep(1.0)
+                
+            if idx < len(offsets) - 1:
+                state.log("stage_2", f"SoilGrids returned empty for offset {dlat}, {dlon} — trying nearest neighbor")
+                await asyncio.sleep(0.5)  # gentle backoff
         if "phh2o" in sg and "ph" not in soil_profile:
             add("ph", sg["phh2o"], "SoilGrids 250m", "medium")
         if "nitrogen" in sg and "nitrogen" not in soil_profile:

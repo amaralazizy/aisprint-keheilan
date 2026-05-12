@@ -34,6 +34,7 @@ class LLMClient:
         temperature: float = None,
     ) -> str:
         """Plain text completion."""
+        logger.debug("LLM Chat Request:\nSystem: %s\nUser: %s", system, user)
         resp = await self.client.chat.completions.create(
             model=self.model,
             max_tokens=max_tokens or CONFIG.llm_max_tokens,
@@ -43,7 +44,22 @@ class LLMClient:
                 {"role": "user", "content": user},
             ],
         )
-        return resp.choices[0].message.content
+        content = resp.choices[0].message.content
+        logger.debug("LLM Chat Response:\n%s", content)
+        
+        # Log to new_pipeline.txt
+        log_file_path = "d:/kheilan/aisprint-keheilan/new_pipeline.txt"
+        try:
+            with open(log_file_path, "a", encoding="utf-8") as f:
+                f.write("========== LLM REQUEST ==========\n")
+                f.write(f"SYSTEM PROMPT:\n{system}\n\n")
+                f.write(f"USER PROMPT:\n{user}\n\n")
+                f.write("========== LLM RESPONSE ==========\n")
+                f.write(f"{content}\n\n")
+        except Exception as e:
+            logger.error(f"Failed to write to new_pipeline.txt: {e}")
+            
+        return content
 
     async def chat_json(
         self,

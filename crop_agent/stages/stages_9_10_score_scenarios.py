@@ -46,10 +46,10 @@ def _adjust_weights_for_context(weights: dict, state: PipelineState) -> dict:
 
 def run_stage_9_overall_score(state: PipelineState) -> PipelineState:
     state.log("stage_9", "applying weighted scoring")
-    goal = state.parsed.raw.goal.value
-    weights = _adjust_weights_for_context(WEIGHT_PRESETS[goal], state)
+    # We removed 'goal' from RawInput, defaulting to balanced 'profit' weights
+    weights = _adjust_weights_for_context(WEIGHT_PRESETS["profit"], state)
 
-    state.log("stage_9", f"weights for goal={goal}: {weights}")
+    state.log("stage_9", f"weights: {weights}")
 
     for score in state.scores:
         # If any veto, overall = 0
@@ -64,45 +64,45 @@ def run_stage_9_overall_score(state: PipelineState) -> PipelineState:
             + weights["risk"] * score.risk
         )
 
+    # We only have one target crop now, but sorting doesn't hurt.
     state.scores.sort(key=lambda s: s.overall, reverse=True)
-    top_3 = [s.crop for s in state.scores[:3] if s.overall > 0]
-    state.log("stage_9", f"top 3: {top_3}")
     return state
 
 
-def run_stage_10_scenarios(state: PipelineState, top_n: int = 3) -> PipelineState:
-    """
-    Stress-test top crops against three shocks. Each yields a
-    (pessimistic, base, optimistic) revenue range in EGP/feddan.
-
-    The constants here are illustrative — replace with empirical data
-    once you have real production stats for your target governorates.
-    """
+def run_stage_10_scenarios(state: PipelineState, top_n: int = 1) -> PipelineState:
+    """Stress-test the target crop against three shocks."""
     state.log("stage_10", "running scenario simulations")
     scenarios: list[ScenarioOutcome] = []
 
     for score in state.scores[:top_n]:
-        if score.overall == 0:
-            continue
-        profile = CROPS[score.crop]
-        yield_mid = sum(profile.typical_yield_t_per_feddan) / 2
-        base_rev = yield_mid * profile.market_price_egp_per_ton
+        crop_name = score.crop
+        
+        # If crop is unknown, use a generic baseline yield and price
+        if crop_name in CROPS:
+            profile = CROPS[crop_name]
+            yield_mid = sum(profile.typical_yield_t_per_feddan) / 2
+            base_rev = yield_mid * profile.market_price_egp_per_ton
+            water_need = profile.water_need_mm
+        else:
+            yield_mid = 3.0
+            base_rev = 30000.0
+            water_need = 600
 
         # Shock multipliers — (pessimistic, base, optimistic) effect on revenue
-        drought_mult = (0.40, 0.65, 0.85) if profile.water_need_mm > 700 else (0.70, 0.85, 0.95)
-        # Devaluation: helps export crops, hurts import-cost-heavy
-        is_export = profile.name in ("cotton", "potato", "onion")
+        drought_mult = (0.40, 0.65, 0.85) if water_need > 700 else (0.70, 0.85, 0.95)
+        
+        # Devaluation
+        is_export = crop_name in ("cotton", "potato", "onion")
         deval_mult = (0.95, 1.10, 1.25) if is_export else (0.75, 0.85, 0.95)
-        # Pest: same crop-specific keyword logic as score_market_and_risk (Fix 3).
-        # Avoids the old bug where "tomato" had to appear literally in alerts
-        # that actually said "Tuta absoluta".
+        
+        # Pest
         from .stages_7_8_score import pest_alert_for
         ev_text = " ".join(e.fact.lower() for e in state.evidence)
-        in_alert = pest_alert_for(profile.name, ev_text) is not None
+        in_alert = pest_alert_for(crop_name, ev_text) is not None
         pest_mult = (0.30, 0.55, 0.80) if in_alert else (0.70, 0.85, 0.95)
 
         outcome = ScenarioOutcome(
-            crop=profile.name,
+            crop=crop_name,
             drought_egp_per_feddan=tuple(base_rev * m for m in drought_mult),
             devaluation_egp_per_feddan=tuple(base_rev * m for m in deval_mult),
             pest_egp_per_feddan=tuple(base_rev * m for m in pest_mult),

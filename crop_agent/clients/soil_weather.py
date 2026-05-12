@@ -31,14 +31,16 @@ class SoilGridsClient:
             "lon": lon,
             "lat": lat,
             "property": ["phh2o", "soc", "nitrogen", "cec", "clay", "sand", "silt", "bdod"],
-            "depth": "0-30cm",
+            "depth": "15-30cm",
             "value": "mean",
         }
         async with httpx.AsyncClient(timeout=30.0) as client:
             try:
+                logger.debug("SoilGrids query request: %s", params)
                 resp = await client.get(CONFIG.soilgrids_base, params=params)
                 resp.raise_for_status()
                 data = resp.json()
+                logger.debug("SoilGrids query response: %s", data)
                 return self._flatten(data)
             except (httpx.HTTPError, KeyError) as e:
                 logger.warning("SoilGrids query failed: %s — returning empty profile", e)
@@ -89,9 +91,12 @@ class NASAPowerClient:
         }
         async with httpx.AsyncClient(timeout=30.0) as client:
             try:
+                logger.debug("NASA POWER query request: %s", params)
                 resp = await client.get(CONFIG.nasa_power_base, params=params)
                 resp.raise_for_status()
-                return resp.json().get("properties", {}).get("parameter", {})
+                data = resp.json()
+                logger.debug("NASA POWER query response: %s", data)
+                return data.get("properties", {}).get("parameter", {})
             except httpx.HTTPError as e:
                 logger.warning("NASA POWER query failed: %s", e)
                 return {}

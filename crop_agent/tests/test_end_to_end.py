@@ -24,11 +24,11 @@ class FakeLLM:
         if "query planner" in system:
             return [
                 {"text": "Egypt wheat support price 2026", "language": "en",
-                 "category": "live_signal", "rationale": "current price for revenue calc"},
+                 "category": "local_news_and_market", "rationale": "current price for revenue calc"},
                 {"text": "wheat varieties Sharqia clay soil", "language": "en",
-                 "category": "fixed_knowledge", "rationale": "match cultivar to soil"},
+                 "category": "agronomic_research", "rationale": "match cultivar to soil"},
                 {"text": "نشرة وزارة الزراعة الشرقية القمح", "language": "ar",
-                 "category": "arabic_ministry", "rationale": "MALR Arabic bulletin"},
+                 "category": "local_news_and_market", "rationale": "MALR Arabic bulletin"},
             ]
         elif "extract atomic facts" in system:
             return [

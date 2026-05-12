@@ -156,7 +156,7 @@ async def score_timing(profile: CropProfile, state: PipelineState, power: NASAPo
 
     # GDD check via NASA POWER (if available)
     if power:
-        start = parsed.raw.start_date
+        start = parsed.raw.start_date - timedelta(days=730)
         end = start + timedelta(days=parsed.raw.harvest_horizon_days)
         data = await power.query_daily(
             parsed.raw.latitude,
@@ -308,44 +308,62 @@ async def run_stages_7_8_score_dimensions(
     state: PipelineState,
     power: NASAPowerClient | None = None,
 ) -> PipelineState:
-    state.log("stage_7_8", "scoring all crops across dimensions")
+    target_crop = state.parsed.raw.target_crop.lower()
+    state.log("stage_7_8", f"scoring dimensions for target crop: {target_crop}")
     soil = state.parsed.soil_profile
     season = state.parsed.season
 
+    if target_crop in CROPS:
+        profile = CROPS[target_crop]
+    else:
+        # Generic profile for unknown crops
+        profile = CropProfile(
+            name=target_crop,
+            ph_optimal=(6.0, 7.5),
+            ph_tolerable=(5.5, 8.5),
+            gdd_required=1800,
+            gdd_base_c=5.0,
+            water_need_mm=600,
+            salinity_tolerance_ds_m=3.0,
+            seasons=("shitawi", "seifi", "nili"),
+            typical_yield_t_per_feddan=(2.0, 5.0),
+            market_price_egp_per_ton=10000,
+        )
+        state.log("stage_7_8", f"Using generic profile for unknown crop: {target_crop}")
+
     scores: list[CropScore] = []
-    for profile in CROPS.values():
-        # Quick filter: skip crops totally wrong for the season
-        if season not in profile.seasons:
-            continue
+    
+    # Check if season matches, but don't skip entirely if it doesn't. 
+    # Just let the timing score penalize it.
+    
+    soil_score, amendments, soil_rationale = score_soil_fit(profile, soil)
+    timing_score, timing_rationale = await score_timing(profile, state, power)
+    market_score, risk_score, vetoes, market_rat, risk_rat = score_market_and_risk(profile, state)
+    water_score, water_rat = score_water_feasibility(profile, state)
 
-        soil_score, amendments, soil_rationale = score_soil_fit(profile, soil)
-        timing_score, timing_rationale = await score_timing(profile, state, power)
-        market_score, risk_score, vetoes, market_rat, risk_rat = score_market_and_risk(profile, state)
-        water_score, water_rat = score_water_feasibility(profile, state)
+    scores.append(CropScore(
+        crop=profile.name,
+        soil_fit=soil_score,
+        timing=timing_score,
+        market=market_score,
+        water=water_score,
+        risk=risk_score,
+        overall=0.0,  # filled in stage 9
+        rationale={
+            "soil_fit": _ensure_rationale(soil_rationale),
+            "timing": _ensure_rationale(timing_rationale),
+            "market": _ensure_rationale(market_rat),
+            "water": _ensure_rationale(water_rat),
+            "risk": _ensure_rationale(risk_rat),
+        },
+        vetoes=vetoes,
+    ))
 
-        scores.append(CropScore(
-            crop=profile.name,
-            soil_fit=soil_score,
-            timing=timing_score,
-            market=market_score,
-            water=water_score,
-            risk=risk_score,
-            overall=0.0,  # filled in stage 9
-            rationale={
-                "soil_fit": _ensure_rationale(soil_rationale),
-                "timing": _ensure_rationale(timing_rationale),
-                "market": _ensure_rationale(market_rat),
-                "water": _ensure_rationale(water_rat),
-                "risk": _ensure_rationale(risk_rat),
-            },
-            vetoes=vetoes,
-        ))
-
-        # Stash amendments on the state keyed by crop for stage 12 to pick up
-        if not hasattr(state, "_amendments"):
-            state._amendments = {}
-        state._amendments[profile.name] = amendments
+    # Stash amendments on the state keyed by crop for stage 12 to pick up
+    if not hasattr(state, "_amendments"):
+        state._amendments = {}
+    state._amendments[profile.name] = amendments
 
     state.scores = scores
-    state.log("stage_7_8", f"scored {len(scores)} candidate crops")
+    state.log("stage_7_8", f"scored {len(scores)} candidate crop")
     return state
