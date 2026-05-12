@@ -165,3 +165,8 @@ class FinalOutput(BaseModel):
     overall_confidence_pct: int
     language: Literal["en", "ar"]
     generated_at: datetime
+
+class CropComparisonResult(BaseModel):
+    winning_crop: str
+    comparison_summary: str
+    rationale: str

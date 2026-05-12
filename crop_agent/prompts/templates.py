@@ -129,6 +129,23 @@ What am I still uncertain about that would change the ranking?
 """
 
 
+# ---------- Stage 0 & Final: Discovery and Comparison ----------
+
+DISCOVER_CROPS_SYSTEM = """You are an expert Egyptian agricultural advisor.
+Your job is to identify the top 3 most popular and profitable crops traditionally grown in Egypt during a specific season.
+Return ONLY a strict JSON list of 3 strings containing the crop names in English (e.g. ["wheat", "clover", "sugar beet"]). No markdown fences, no prose."""
+
+COMPARE_CROPS_SYSTEM = """You are a master agronomist. 
+You are given the detailed evaluation results for 3 different crops on the exact same piece of land.
+Your job is to compare them across Yield, Revenue, Confidence, Pros/Cons, and Risk, and declare the absolute BEST crop to plant.
+Return strict JSON matching the CropComparisonResult schema:
+{
+    "winning_crop": "string",
+    "comparison_summary": "string",
+    "rationale": "string"
+}"""
+
+
 # ---------- Stage 11: self-critique ----------
 
 CRITIQUE_SYSTEM = """You are the final auditor before the evaluation ships to a farmer.
