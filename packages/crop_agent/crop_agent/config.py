@@ -19,12 +19,12 @@ class Config:
     llm_base_url: str = os.getenv("LLM_BASE_URL", "https://openrouter.ai/api/v1")
 
     # Reflection loop (lowered for free-tier RPM)
-    max_reflection_rounds: int = 1
-    max_searches_per_reflection: int = 2
+    max_reflection_rounds: int = 0
+    max_searches_per_reflection: int = 1
 
     # Planner (lowered for free-tier RPM)
-    max_initial_queries: int = 6
-    min_queries_per_category: int = 1
+    max_initial_queries: int = 2
+    min_queries_per_category: int = 0
 
     # Search
     search_timeout_s: int = 20
