@@ -1,0 +1,10 @@
+streamlit
+pydantic
+pydantic-settings
+openai
+sqlmodel
+psycopg[binary]
+fastapi
+uvicorn
+python-dotenv
+tavily-python
